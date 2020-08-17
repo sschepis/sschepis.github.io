@@ -1,0 +1,1087 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+<meta charset="utf-8">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>CodePen - Neural Drum Machine</title>
+<link rel="stylesheet" media="screen" href="https://static.codepen.io/assets/fullpage/fullpage-4de243a40619a967c0bf13b95e1ac6f8de89d943b7fc8710de33f681fe287604.css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900,900italic" rel="stylesheet" />
+<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+<title>CodePen - Neural Drum Machine</title>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+<style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0,0,0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; } /* $linkColorOnBlack */
+  </style>
+</head>
+<body class="">
+<div class="referer-warning">
+</div>
+<div id="result-iframe-wrap" role="main">
+<iframe id="result" srcdoc="
+<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+
+  <meta charset=&quot;UTF-8&quot;>
+  
+<link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+<meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+<link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+<link rel=&quot;mask-icon&quot; type=&quot;&quot; href=&quot;https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg&quot; color=&quot;#111&quot; />
+
+
+  <title>CodePen - Neural Drum Machine</title>
+  <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
+
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'>
+  
+<style>
+html,
+body,
+.app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  background-color: #111;
+  color: white;
+}
+
+.progress {
+  max-width: 30%;
+  margin: 45vh auto 55vh auto;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(to right, #010305, #131516);
+}
+
+.sequencer,
+.controls {
+  width: 80vw;
+}
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.control {
+  text-align: center;
+}
+.control input {
+  margin-bottom: 20px;
+}
+.select-wrapper span.caret {
+  color: inherit; /* Override materialize.css black */
+}
+.select-wrapper input.select-dropdown {
+  margin-bottom: 10px;
+}
+.input-field {
+  margin-top: 0;
+}
+input[type='range'] {
+  border: 0;
+}
+input[type='range'] + .thumb {
+  background-color: #2196f3;
+}
+input[type='range']::-webkit-slider-thumb {
+  background-color: #2196f3;
+}
+input[type='range']::-moz-range-thumb {
+  background-color: #2196f3;
+}
+input[type='range']::-ms-thumb {
+  background-color: #2196f3;
+}
+.control .share {
+  margin-top: 10px;
+}
+.midi-output,
+.midi-clock-input,
+.select-wrapper {
+  max-width: 200px;
+  margin: 0 auto;
+}
+.select-wrapper input {
+  color: white;
+}
+.sequencer {
+  position: relative;
+  height: 70vh;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+.sequencer .legend {
+  flex: 0.75;
+  display: flex;
+  flex-direction: column;
+}
+.drum-class {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 2.5px;
+
+  font-size: 12px;
+  color: #999;
+}
+.sequencer .steps {
+  flex: 9;
+  display: flex;
+  flex-direction: row;
+}
+.step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+}
+.steps {
+  transform-style: preserve-3d;
+}
+.gutter {
+  width: 5px;
+}
+.gutter.seed-marker {
+  background-color: #aaa;
+  margin: 0 10px;
+  cursor: move;
+}
+.gutter.seed-marker:hover {
+  background-color: white;
+}
+.cell {
+  margin: 2.5px 0;
+  background-color: rgba(100, 100, 100, 0.1);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+  border-radius: 3px;
+  z-index: 0;
+  transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+  background-color: rgba(100, 100, 100, 0.5);
+}
+.step:not(.regenerating) .cell.on {
+  background-color: #64b5f6;
+  opacity: 1;
+}
+
+.step.seed .cell.on {
+  background-color: #e91e63;
+}
+
+.regenerate {
+  position: absolute;
+  visibility: hidden;
+  font-size: 30px;
+  line-height: 56px;
+}
+
+.kick {
+  flex: 2;
+  margin-bottom: 10px;
+}
+.snare {
+  flex: 1;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.hi-hat-closed {
+  flex: 1;
+  margin-top: 10px;
+}
+.hi-hat-open {
+  flex: 1;
+  margin-bottom: 10px;
+}
+.tom-low {
+  flex: 1;
+  margin-top: 10px;
+}
+.tom-mid {
+  flex: 1;
+}
+.tom-high {
+  flex: 1;
+  margin-bottom: 10px;
+}
+.clap {
+  flex: 1;
+  margin-top: 10px;
+}
+.rim {
+  flex: 1;
+}
+
+.info {
+  max-width: 50%;
+  margin: 100px auto;
+  text-align: center;
+}
+.info p {
+  margin-top: 50px;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage(&quot;resize&quot;, &quot;*&quot;);
+  }
+</script>
+
+
+</head>
+
+<body translate=&quot;no&quot; >
+  <div class=&quot;progress pink&quot;>
+    <div class=&quot;indeterminate white&quot;></div>
+  </div>
+  <div class=&quot;app&quot; style=&quot;display: none;&quot;>
+    <div class=&quot;sequencer&quot;>
+      <div class=&quot;steps&quot;></div>
+    </div>
+    <a class=&quot;regenerate btn-floating btn-large waves-effect waves-light pink darken-2 pulse&quot;>
+      <i class=&quot;material-icons&quot;>refresh</i>
+    </a>
+    <div class=&quot;controls&quot;>
+      <div class=&quot;control&quot;>
+        <a class=&quot;playpause btn-floating btn-large waves-effect waves-light blue&quot;>
+          <i class=&quot;material-icons play-icon&quot;>play_arrow</i>
+          <i class=&quot;material-icons pause-icon&quot; style=&quot;display: none&quot;>pause</i>
+        </a>
+      </div>
+      <div class=&quot;control&quot;>
+        <div class=&quot;input-field grey-text&quot;>
+          <select id=&quot;pattern-length&quot;>
+            <option>4</option>
+            <option>8</option>
+            <option selected>16</option>
+            <option>32</option>
+          </select>
+          Pattern length
+        </div>
+      </div>
+      <div class=&quot;control&quot;>
+        <p class=&quot;range-field grey-text&quot;>
+          <input type=&quot;range&quot; id=&quot;tempo&quot; min=&quot;20&quot; max=&quot;240&quot; value=&quot;120&quot; step=&quot;1&quot;> Tempo
+        </p>
+      </div>
+      <div class=&quot;control&quot;>
+        <p class=&quot;range-field grey-text&quot;>
+          <input type=&quot;range&quot; id=&quot;swing&quot; min=&quot;0.5&quot; max=&quot;0.7&quot; value=&quot;0.55&quot; step=&quot;0.05&quot;> Swing
+        </p>
+      </div>
+      <div class=&quot;control&quot;>
+        <p class=&quot;range-field grey-text&quot;>
+          <input type=&quot;range&quot; id=&quot;temperature&quot; class=&quot;tooltipped&quot; min=&quot;0.5&quot; max=&quot;2&quot; value=&quot;1.1&quot; step=&quot;0.1&quot; data-tooltip=&quot;Higher temperatures will make the neural network generates wilder patterns&quot;
+                 data-delay=&quot;500&quot;> Temperature
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class=&quot;info&quot;>
+    <p class=&quot;webmidi-enabled&quot; style=&quot;display: none;&quot;>
+      Output:
+      <select class=&quot;midi-output&quot;></select>
+    </p>
+    <p class=&quot;webmidi-enabled&quot; style=&quot;display: none;&quot;>
+      MIDI clock output:
+      <select class=&quot;midi-clock-output&quot;></select>
+    </p>
+    <p class=&quot;webmidi-enabled&quot; style=&quot;display: none;&quot;>
+      MIDI clock input:
+      <select class=&quot;midi-clock-input&quot;></select>
+    </p>
+    <p>This is an experimental drum machine powered by a deep neural network. To use it, define a seed pattern on the left,
+      and use the &amp;ldquo;generate&amp;rdquo; button. A neural network will dream up a continuation to your seed pattern.</p>
+    <p>Using the
+      <a href=&quot;https://github.com/tensorflow/magenta/tree/master/magenta/models/drums_rnn&quot;>Drums RNN</a> (pretrained) model from
+      <a href=&quot;https://magenta.tensorflow.org/&quot;>Google Magenta</a>, and
+      <a href=&quot;https://goo.gl/magenta/js&quot;>Magenta.js</a> + 
+      <a href=&quot;https://js.tensorflow.org/&quot;>TensorFlow.js</a> +
+      <a href=&quot;https://tonejs.github.io/&quot;>Tone.js</a>.</p>
+    <p>A pen by
+      <a href=&quot;https://twitter.com/teropa&quot;>@teropa</a>.</p>
+  </div>
+    <script src=&quot;https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js&quot;></script>
+
+  <script src='https://cdn.jsdelivr.net/npm/babel-regenerator-runtime@6.5.0/runtime.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/lodash@4.17.5/lodash.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/@magenta/music@1.1.11/dist/magentamusic.min.js'></script>
+<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/web-animations-js@2.3.1/web-animations.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/webmidi@2.0.0/webmidi.min.js'></script>
+  
+      <script id=&quot;rendered-js&quot; >
+const DRUM_CLASSES = [
+'Kick',
+'Snare',
+'Hi-hat closed',
+'Hi-hat open',
+'Tom low',
+'Tom mid',
+'Tom high',
+'Clap',
+'Rim'];
+
+const TIME_HUMANIZATION = 0.01;
+
+let Tone = mm.Player.tone;
+
+let sampleBaseUrl = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699';
+
+let reverb = new Tone.Convolver(
+`${sampleBaseUrl}/small-drum-room.wav`).
+toMaster();
+reverb.wet.value = 0.35;
+
+let snarePanner = new Tone.Panner().connect(reverb);
+new Tone.LFO(0.13, -0.25, 0.25).connect(snarePanner.pan).start();
+
+let drumKit = [
+new Tone.Players({
+  high: `${sampleBaseUrl}/808-kick-vh.mp3`,
+  med: `${sampleBaseUrl}/808-kick-vm.mp3`,
+  low: `${sampleBaseUrl}/808-kick-vl.mp3` }).
+toMaster(),
+new Tone.Players({
+  high: `${sampleBaseUrl}/flares-snare-vh.mp3`,
+  med: `${sampleBaseUrl}/flares-snare-vm.mp3`,
+  low: `${sampleBaseUrl}/flares-snare-vl.mp3` }).
+connect(snarePanner),
+new Tone.Players({
+  high: `${sampleBaseUrl}/808-hihat-vh.mp3`,
+  med: `${sampleBaseUrl}/808-hihat-vm.mp3`,
+  low: `${sampleBaseUrl}/808-hihat-vl.mp3` }).
+connect(new Tone.Panner(-0.5).connect(reverb)),
+new Tone.Players({
+  high: `${sampleBaseUrl}/808-hihat-open-vh.mp3`,
+  med: `${sampleBaseUrl}/808-hihat-open-vm.mp3`,
+  low: `${sampleBaseUrl}/808-hihat-open-vl.mp3` }).
+connect(new Tone.Panner(-0.5).connect(reverb)),
+new Tone.Players({
+  high: `${sampleBaseUrl}/slamdam-tom-low-vh.mp3`,
+  med: `${sampleBaseUrl}/slamdam-tom-low-vm.mp3`,
+  low: `${sampleBaseUrl}/slamdam-tom-low-vl.mp3` }).
+connect(new Tone.Panner(-0.4).connect(reverb)),
+new Tone.Players({
+  high: `${sampleBaseUrl}/slamdam-tom-mid-vh.mp3`,
+  med: `${sampleBaseUrl}/slamdam-tom-mid-vm.mp3`,
+  low: `${sampleBaseUrl}/slamdam-tom-mid-vl.mp3` }).
+connect(reverb),
+new Tone.Players({
+  high: `${sampleBaseUrl}/slamdam-tom-high-vh.mp3`,
+  med: `${sampleBaseUrl}/slamdam-tom-high-vm.mp3`,
+  low: `${sampleBaseUrl}/slamdam-tom-high-vl.mp3` }).
+connect(new Tone.Panner(0.4).connect(reverb)),
+new Tone.Players({
+  high: `${sampleBaseUrl}/909-clap-vh.mp3`,
+  med: `${sampleBaseUrl}/909-clap-vm.mp3`,
+  low: `${sampleBaseUrl}/909-clap-vl.mp3` }).
+connect(new Tone.Panner(0.5).connect(reverb)),
+new Tone.Players({
+  high: `${sampleBaseUrl}/909-rim-vh.wav`,
+  med: `${sampleBaseUrl}/909-rim-vm.wav`,
+  low: `${sampleBaseUrl}/909-rim-vl.wav` }).
+connect(new Tone.Panner(0.5).connect(reverb))];
+
+let midiDrums = [36, 38, 42, 46, 41, 43, 45, 49, 51];
+let reverseMidiMapping = new Map([
+[36, 0],
+[35, 0],
+[38, 1],
+[27, 1],
+[28, 1],
+[31, 1],
+[32, 1],
+[33, 1],
+[34, 1],
+[37, 1],
+[39, 1],
+[40, 1],
+[56, 1],
+[65, 1],
+[66, 1],
+[75, 1],
+[85, 1],
+[42, 2],
+[44, 2],
+[54, 2],
+[68, 2],
+[69, 2],
+[70, 2],
+[71, 2],
+[73, 2],
+[78, 2],
+[80, 2],
+[46, 3],
+[67, 3],
+[72, 3],
+[74, 3],
+[79, 3],
+[81, 3],
+[45, 4],
+[29, 4],
+[41, 4],
+[61, 4],
+[64, 4],
+[84, 4],
+[48, 5],
+[47, 5],
+[60, 5],
+[63, 5],
+[77, 5],
+[86, 5],
+[87, 5],
+[50, 6],
+[30, 6],
+[43, 6],
+[62, 6],
+[76, 6],
+[83, 6],
+[49, 7],
+[55, 7],
+[57, 7],
+[58, 7],
+[51, 8],
+[52, 8],
+[53, 8],
+[59, 8],
+[82, 8]]);
+
+
+let temperature = 1.0;
+
+let outputs = {
+  internal: {
+    play: (drumIdx, velocity, time) => {
+      drumKit[drumIdx].get(velocity).start(time);
+    } } };
+
+
+
+let rnn = new mm.MusicRNN(
+'https://storage.googleapis.com/download.magenta.tensorflow.org/tfjs_checkpoints/music_rnn/drum_kit_rnn');
+
+Promise.all([
+rnn.initialize(),
+new Promise(res => Tone.Buffer.on('load', res))]).
+then(([vars]) => {
+  let state = {
+    patternLength: 32,
+    seedLength: 4,
+    swing: 0.55,
+    pattern: [[0], [], [2]].concat(_.times(32, i => [])),
+    tempo: 120 };
+
+  let stepEls = [],
+  hasBeenStarted = false,
+  oneEighth = Tone.Time('8n').toSeconds(),
+  activeOutput = 'internal',
+  midiClockSender = null,
+  midiClockStartSent = false,
+  activeClockInput = 'none',
+  currentSchedulerId,
+  stepCounter;
+
+  function generatePattern(seed, length) {
+    let seedSeq = toNoteSequence(seed);
+    return rnn.
+    continueSequence(seedSeq, length, temperature).
+    then(r => seed.concat(fromNoteSequence(r, length)));
+  }
+
+  function getStepVelocity(step) {
+    if (step % 4 === 0) {
+      return 'high';
+    } else if (step % 2 === 0) {
+      return 'med';
+    } else {
+      return 'low';
+    }
+  }
+
+  function humanizeTime(time) {
+    return time - TIME_HUMANIZATION / 2 + Math.random() * TIME_HUMANIZATION;
+  }
+
+  function tick(time = Tone.now() - Tone.context.lookAhead) {
+    if (_.isNumber(stepCounter) &amp;&amp; state.pattern) {
+      stepCounter++;
+      if (midiClockSender) midiClockSender(time, stepCounter);
+
+      let stepIdx = stepCounter % state.pattern.length;
+      let isSwung = stepIdx % 2 !== 0;
+      if (isSwung) {
+        time += (state.swing - 0.5) * oneEighth;
+      }
+      let velocity = getStepVelocity(stepIdx);
+      let drums = state.pattern[stepIdx];
+      drums.forEach(d => {
+        let humanizedTime = stepIdx === 0 ? time : humanizeTime(time);
+        outputs[activeOutput].play(d, velocity, humanizedTime);
+        visualizePlay(humanizedTime, stepIdx, d);
+      });
+    }
+  }
+
+  function startPattern() {
+    stepCounter = -1;
+    midiClockStartSent = false;
+    updatePlayPauseIcons();
+  }
+
+  function stopPattern() {
+    stepCounter = null;
+    updatePlayPauseIcons();
+  }
+
+  function visualizePlay(time, stepIdx, drumIdx) {
+    Tone.Draw.schedule(() => {
+      if (!stepEls[stepIdx]) return;
+      let animTime = oneEighth * 4 * 1000;
+      let cellEl = stepEls[stepIdx].cellEls[drumIdx];
+      if (cellEl.classList.contains('on')) {
+        let baseColor = stepIdx < state.seedLength ? '#e91e63' : '#64b5f6';
+        cellEl.animate(
+        [
+        {
+          transform: 'translateZ(-100px)',
+          backgroundColor: '#fad1df' },
+
+        {
+          transform: 'translateZ(50px)',
+          offset: 0.7 },
+
+        { transform: 'translateZ(0)', backgroundColor: baseColor }],
+
+        { duration: animTime, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
+
+      }
+    }, time);
+  }
+
+  function renderPattern(regenerating = false) {
+    let seqEl = document.querySelector('.sequencer .steps');
+    while (stepEls.length > state.pattern.length) {if (window.CP.shouldStopExecution(0)) break;
+      let { stepEl, gutterEl } = stepEls.pop();
+      stepEl.remove();
+      if (gutterEl) gutterEl.remove();
+    }window.CP.exitedLoop(0);
+    for (let stepIdx = 0; stepIdx < state.pattern.length; stepIdx++) {if (window.CP.shouldStopExecution(1)) break;
+      let step = state.pattern[stepIdx];
+      let stepEl, gutterEl, cellEls;
+      if (stepEls[stepIdx]) {
+        stepEl = stepEls[stepIdx].stepEl;
+        gutterEl = stepEls[stepIdx].gutterEl;
+        cellEls = stepEls[stepIdx].cellEls;
+      } else {
+        stepEl = document.createElement('div');
+        stepEl.classList.add('step');
+        stepEl.dataset.stepIdx = stepIdx;
+        seqEl.appendChild(stepEl);
+        cellEls = [];
+      }
+
+      stepEl.style.flex = stepIdx % 2 === 0 ? state.swing : 1 - state.swing;
+
+      if (!gutterEl &amp;&amp; stepIdx < state.pattern.length - 1) {
+        gutterEl = document.createElement('div');
+        gutterEl.classList.add('gutter');
+        seqEl.insertBefore(gutterEl, stepEl.nextSibling);
+      } else if (gutterEl &amp;&amp; stepIdx >= state.pattern.length) {
+        gutterEl.remove();
+        gutterEl = null;
+      }
+
+      if (gutterEl &amp;&amp; stepIdx === state.seedLength - 1) {
+        gutterEl.classList.add('seed-marker');
+      } else if (gutterEl) {
+        gutterEl.classList.remove('seed-marker');
+      }
+
+      for (let cellIdx = 0; cellIdx < DRUM_CLASSES.length; cellIdx++) {if (window.CP.shouldStopExecution(2)) break;
+        let cellEl;
+        if (cellEls[cellIdx]) {
+          cellEl = cellEls[cellIdx];
+        } else {
+          cellEl = document.createElement('div');
+          cellEl.classList.add('cell');
+          cellEl.classList.add(_.kebabCase(DRUM_CLASSES[cellIdx]));
+          cellEl.dataset.stepIdx = stepIdx;
+          cellEl.dataset.cellIdx = cellIdx;
+          stepEl.appendChild(cellEl);
+          cellEls[cellIdx] = cellEl;
+        }
+        if (step.indexOf(cellIdx) >= 0) {
+          cellEl.classList.add('on');
+        } else {
+          cellEl.classList.remove('on');
+        }
+      }window.CP.exitedLoop(2);
+      stepEls[stepIdx] = { stepEl, gutterEl, cellEls };
+
+      let stagger = stepIdx * (300 / (state.patternLength - state.seedLength));
+      setTimeout(() => {
+        if (stepIdx < state.seedLength) {
+          stepEl.classList.add('seed');
+        } else {
+          stepEl.classList.remove('seed');
+          if (regenerating) {
+            stepEl.classList.add('regenerating');
+          } else {
+            stepEl.classList.remove('regenerating');
+          }
+        }
+      }, stagger);
+    }window.CP.exitedLoop(1);
+
+    setTimeout(repositionRegenerateButton, 0);
+  }
+
+  function repositionRegenerateButton() {
+    let regenButton = document.querySelector('.regenerate');
+    let sequencerEl = document.querySelector('.sequencer');
+    let seedMarkerEl = document.querySelector('.gutter.seed-marker');
+    let regenLeft =
+    sequencerEl.offsetLeft +
+    seedMarkerEl.offsetLeft +
+    seedMarkerEl.offsetWidth / 2 -
+    regenButton.offsetWidth / 2;
+    let regenTop =
+    sequencerEl.offsetTop +
+    seedMarkerEl.offsetTop +
+    seedMarkerEl.offsetHeight / 2 -
+    regenButton.offsetHeight / 2;
+    regenButton.style.left = `${regenLeft}px`;
+    regenButton.style.top = `${regenTop}px`;
+    regenButton.style.visibility = 'visible';
+  }
+
+  function regenerate() {
+    let seed = _.take(state.pattern, state.seedLength);
+    renderPattern(true);
+    return generatePattern(seed, state.patternLength - seed.length).then(
+    result => {
+      state.pattern = result;
+      onPatternUpdated();
+    });
+
+  }
+
+  function onPatternUpdated() {
+    stopPattern();
+    renderPattern();
+  }
+
+  function toggleStep(cellEl) {
+    if (state.pattern &amp;&amp; cellEl.classList.contains('cell')) {
+      let stepIdx = +cellEl.dataset.stepIdx;
+      let cellIdx = +cellEl.dataset.cellIdx;
+      let isOn = cellEl.classList.contains('on');
+      if (isOn) {
+        _.pull(state.pattern[stepIdx], cellIdx);
+        cellEl.classList.remove('on');
+      } else {
+        state.pattern[stepIdx].push(cellIdx);
+        cellEl.classList.add('on');
+      }
+    }
+  }
+
+  function toNoteSequence(pattern) {
+    return mm.sequences.quantizeNoteSequence(
+    {
+      ticksPerQuarter: 220,
+      totalTime: pattern.length / 2,
+      timeSignatures: [
+      {
+        time: 0,
+        numerator: 4,
+        denominator: 4 }],
+
+
+      tempos: [
+      {
+        time: 0,
+        qpm: 120 }],
+
+
+      notes: _.flatMap(pattern, (step, index) =>
+      step.map(d => ({
+        pitch: midiDrums[d],
+        startTime: index * 0.5,
+        endTime: (index + 1) * 0.5 }))) },
+
+
+
+    1);
+
+  }
+
+  function fromNoteSequence(seq, patternLength) {
+    let res = _.times(patternLength, () => []);
+    for (let { pitch, quantizedStartStep } of seq.notes) {
+      res[quantizedStartStep].push(reverseMidiMapping.get(pitch));
+    }
+    return res;
+  }
+
+  function setSwing(newSwing) {
+    state.swing = newSwing;
+    renderPattern();
+  }
+
+  function updatePlayPauseIcons() {
+    if (_.isNumber(stepCounter)) {
+      document.querySelector('.playpause .pause-icon').style.display = null;
+      document.querySelector('.playpause .play-icon').style.display = 'none';
+    } else {
+      document.querySelector('.playpause .play-icon').style.display = null;
+      document.querySelector('.playpause .pause-icon').style.display = 'none';
+    }
+  }
+
+  WebMidi.enable(err => {
+    if (err) {
+      console.error('WebMidi could not be enabled', err);
+      return;
+    }
+    document.
+    querySelectorAll('.webmidi-enabled').
+    forEach(e => e.style.display = 'block');
+    let outputSelector = document.querySelector('.midi-output');
+    let clockOutputSelector = document.querySelector('.midi-clock-output');
+    let clockInputSelector = document.querySelector('.midi-clock-input');
+    let activeClockOutput,
+    midiClockCounter = 0,
+    eighthsCounter = 0,
+    lastEighthAt;
+
+    function onDevicesChanged() {
+      while (outputSelector.firstChild) {if (window.CP.shouldStopExecution(3)) break;
+        outputSelector.firstChild.remove();
+      }window.CP.exitedLoop(3);
+      let internalOption = document.createElement('option');
+      internalOption.value = 'internal';
+      internalOption.innerText = 'Internal drumkit';
+      outputSelector.appendChild(internalOption);
+      for (let output of WebMidi.outputs) {
+        let option = document.createElement('option');
+        option.value = output.id;
+        option.innerText = output.name;
+        outputSelector.appendChild(option);
+      }
+      $(outputSelector).formSelect();
+      onActiveOutputChange('internal');
+
+      while (clockOutputSelector.firstChild) {if (window.CP.shouldStopExecution(4)) break;
+        clockOutputSelector.firstChild.remove();
+      }window.CP.exitedLoop(4);
+      let noneOption = document.createElement('option');
+      noneOption.value = 'none';
+      noneOption.innerText = 'Not sending';
+      clockOutputSelector.appendChild(noneOption);
+      for (let output of WebMidi.outputs) {
+        let option = document.createElement('option');
+        option.value = output.id;
+        option.innerText = output.name;
+        clockOutputSelector.appendChild(option);
+      }
+      $(clockOutputSelector).formSelect();
+      onActiveClockOutputChange('none');
+
+      while (clockInputSelector.firstChild) {if (window.CP.shouldStopExecution(5)) break;
+        clockInputSelector.firstChild.remove();
+      }window.CP.exitedLoop(5);
+      noneOption = document.createElement('option');
+      noneOption.value = 'none';
+      noneOption.innerText = 'None (using internal clock)';
+      clockInputSelector.appendChild(noneOption);
+      for (let input of WebMidi.inputs) {
+        let option = document.createElement('option');
+        option.value = input.id;
+        option.innerText = input.name;
+        clockInputSelector.appendChild(option);
+      }
+      $(clockInputSelector).formSelect();
+      onActiveClockInputChange('none');
+    }
+
+    function onActiveOutputChange(id) {
+      if (activeOutput !== 'internal') {
+        outputs[activeOutput] = null;
+      }
+      activeOutput = id;
+      if (activeOutput !== 'internal') {
+        let output = WebMidi.getOutputById(id);
+        outputs[id] = {
+          play: (drumIdx, velo, time) => {
+            let delay = (time - Tone.now()) * 1000;
+            let duration = oneEighth / 2 * 1000;
+            let velocity = { high: 1, med: 0.75, low: 0.5 };
+            output.playNote(midiDrums[drumIdx], 1, {
+              time: delay > 0 ? `+${delay}` : WebMidi.now,
+              velocity,
+              duration });
+
+          } };
+
+      }
+      for (let option of Array.from(outputSelector.children)) {
+        option.selected = option.value === id;
+      }
+    }
+
+    function onActiveClockOutputChange(id) {
+      if (activeClockOutput !== 'none') {
+        stopSendingMidiClock();
+      }
+      activeClockOutput = id;
+      if (activeClockOutput !== 'none') {
+        startSendingMidiClock();
+      }
+      for (let option of Array.from(clockOutputSelector.children)) {
+        option.selected = option.value === id;
+      }
+    }
+
+    function startSendingMidiClock() {
+      let output = WebMidi.getOutputById(activeClockOutput);
+      midiClockSender = function (time, stepCounter) {
+        let startDelay = time - Tone.now() + Tone.context.lookAhead;
+        let sixteenth = Tone.Time('16n').toSeconds();
+        for (let i = 0; i < 6; i++) {if (window.CP.shouldStopExecution(6)) break;
+          let tickDelay = startDelay + sixteenth / 6 * i;
+          if (i === 0 &amp;&amp; stepCounter === 0 &amp;&amp; !midiClockStartSent) {
+            console.log('sending clock start');
+            output.sendStart({ time: `+${tickDelay * 1000}` });
+            midiClockStartSent = true;
+          }
+          output.sendClock({ time: `+${tickDelay * 1000}` });
+        }window.CP.exitedLoop(6);
+      };
+    }
+
+    function stopSendingMidiClock() {
+      midiClockSender = null;
+      midiClockStartSent = false;
+    }
+
+    function incomingMidiClockStart() {
+      midiClockCounter = 0;
+      eighthsCounter = 0;
+      startPattern();
+    }
+
+    function incomingMidiClockStop() {
+      midiClockCounter = 0;
+      eighthsCounter = 0;
+      lastEighthAt = null;
+      stopPattern();
+    }
+
+    function incomingMidiClockTick(evt) {
+      if (midiClockCounter % 6 === 0) {
+        tick();
+      }
+      if (eighthsCounter % 12 === 0) {
+        if (lastEighthAt) {
+          oneEighth = (evt.timestamp - lastEighthAt) / 1000;
+        }
+        lastEighthAt = evt.timestamp;
+      }
+      midiClockCounter++;
+      eighthsCounter++;
+    }
+
+    function onActiveClockInputChange(id) {
+      if (activeClockInput === 'none') {
+        Tone.Transport.clear(currentSchedulerId);
+        currentSchedulerId = null;
+      } else if (activeClockInput) {
+        let input = WebMidi.getInputById(activeClockInput);
+        input.removeListener('start', 'all', incomingMidiClockStart);
+        input.removeListener('stop', 'all', incomingMidiClockStop);
+        input.removeListener('clock', 'all', incomingMidiClockTick);
+      }
+      activeClockInput = id;
+      if (activeClockInput === 'none') {
+        currentSchedulerId = Tone.Transport.scheduleRepeat(tick, '16n');
+        oneEighth = Tone.Time('8n').toSeconds();
+      } else {
+        let input = WebMidi.getInputById(id);
+        input.addListener('start', 'all', incomingMidiClockStart);
+        input.addListener('stop', 'all', incomingMidiClockStop);
+        input.addListener('clock', 'all', incomingMidiClockTick);
+      }
+    }
+
+    onDevicesChanged();
+    WebMidi.addListener('connected', onDevicesChanged);
+    WebMidi.addListener('disconnected', onDevicesChanged);
+
+    $(outputSelector).
+    on('change', evt => onActiveOutputChange(evt.target.value)).
+    formSelect();
+    $(clockOutputSelector).
+    on('change', evt => onActiveClockOutputChange(evt.target.value)).
+    formSelect();
+    $(clockInputSelector).
+    on('change', evt => onActiveClockInputChange(evt.target.value)).
+    formSelect();
+  });
+
+  document.querySelector('.app').addEventListener('click', event => {
+    if (event.target.classList.contains('cell')) {
+      toggleStep(event.target);
+    }
+  });
+  document.querySelector('.regenerate').addEventListener('click', event => {
+    event.preventDefault();
+    event.currentTarget.classList.remove('pulse');
+    document.querySelector('.playpause').classList.remove('pulse');
+    regenerate().then(() => {
+      if (!hasBeenStarted) {
+        Tone.context.resume();
+        Tone.Transport.start();
+        hasBeenStarted = true;
+      }
+      if (Tone.Transport.state === 'started') {
+        setTimeout(startPattern, 0);
+      }
+    });
+  });
+  document.querySelector('.playpause').addEventListener('click', event => {
+    event.preventDefault();
+    document.querySelector('.playpause').classList.remove('pulse');
+    if (_.isNumber(stepCounter)) {
+      stopPattern();
+      Tone.Transport.pause();
+    } else {
+      Tone.context.resume();
+      Tone.Transport.start();
+      startPattern();
+      hasBeenStarted = true;
+    }
+  });
+
+  let draggingSeedMarker = false;
+  document.querySelector('.app').addEventListener('mousedown', evt => {
+    let el = evt.target;
+    if (
+    el.classList.contains('gutter') &amp;&amp;
+    el.classList.contains('seed-marker'))
+    {
+      draggingSeedMarker = true;
+      evt.preventDefault();
+    }
+  });
+  document.querySelector('.app').addEventListener('mouseup', () => {
+    draggingSeedMarker = false;
+  });
+  document.querySelector('.app').addEventListener('mouseover', evt => {
+    if (draggingSeedMarker) {
+      let el = evt.target;
+      while (el) {if (window.CP.shouldStopExecution(7)) break;
+        if (el.classList.contains('step')) {
+          let stepIdx = +el.dataset.stepIdx;
+          if (stepIdx > 0) {
+            state.seedLength = stepIdx;
+            renderPattern();
+          }
+          break;
+        }
+        el = el.parentElement;
+      }window.CP.exitedLoop(7);
+    }
+  });
+  document.
+  querySelector('#swing').
+  addEventListener('input', evt => setSwing(+evt.target.value));
+  document.
+  querySelector('#temperature').
+  addEventListener('input', evt => temperature = +evt.target.value);
+  document.querySelector('#tempo').addEventListener('input', evt => {
+    Tone.Transport.bpm.value = state.tempo = +evt.target.value;
+    oneEighth = Tone.Time('8n').toSeconds();
+  });
+
+  $('#pattern-length').
+  on('change', evt => setPatternLength(+evt.target.value)).
+  formSelect();
+
+  window.addEventListener('resize', repositionRegenerateButton);
+
+  renderPattern();
+
+  document.querySelector('.progress').remove();
+  document.querySelector('.app').style.display = null;
+});
+//# sourceURL=pen.js
+    </script>
+
+  
+
+</body>
+
+</html>
+ 
+" sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation  allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; vr" allowTransparency="true" allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+</div>
+</body>
+</html>
