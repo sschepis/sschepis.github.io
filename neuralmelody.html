@@ -1,68 +1,12 @@
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-<meta name="apple-mobile-web-app-title" content="CodePen">
-<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
-<meta charset="utf-8">
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Neural Melody Autocompletion</title>
-<link rel="stylesheet" media="screen" href="https://static.codepen.io/assets/fullpage/fullpage-4de243a40619a967c0bf13b95e1ac6f8de89d943b7fc8710de33f681fe287604.css" />
-<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900,900italic" rel="stylesheet" />
-<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-<meta name="apple-mobile-web-app-title" content="CodePen">
-<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
-<title>CodePen - Neural Melody Autocompletion</title>
-<script>
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
-  }
-</script>
-<style>
-    html { font-size: 15px; }
-    html, body { margin: 0; padding: 0; min-height: 100%; }
-    body { height:100%; display: flex; flex-direction: column; }
-    .referer-warning {
-      background: black;
-      box-shadow: 0 2px 5px rgba(0,0,0, 0.5);
-      padding: 0.75em;
-      color: white;
-      text-align: center;
-      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
-      line-height: 1.2;
-      font-size: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
-    .referer-warning a { color: #56bcf9; } /* $linkColorOnBlack */
-  </style>
-</head>
-<body class="">
-<div class="referer-warning">
-</div>
-<div id="result-iframe-wrap" role="main">
-<iframe id="result" srcdoc="
-<!DOCTYPE html>
-<html lang=&quot;en&quot; >
+<html lang="en" >
 
 <head>
 
-  <meta charset=&quot;UTF-8&quot;>
+  <meta charset="UTF-8">
   
-<link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
-<meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
-
-<link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
-
-<link rel=&quot;mask-icon&quot; type=&quot;&quot; href=&quot;https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg&quot; color=&quot;#111&quot; />
-
-
-  <title>CodePen - Neural Melody Autocompletion</title>
+  <title>Neural Melody Autocompletion</title>
   
   
   <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Abel'>
@@ -217,72 +161,72 @@ a:visited {
   
   <script>
   if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage(&quot;resize&quot;, &quot;*&quot;);
+    window.parent.postMessage("resize", "*");
   }
 </script>
 
 
 </head>
 
-<body translate=&quot;no&quot; >
-  <div class=&quot;container&quot;>
-  <div class=&quot;machine-bg&quot;>
-    <div class=&quot;player&quot;></div>
-    <div class=&quot;controls&quot;>
+<body translate="no" >
+  <div class="container">
+  <div class="machine-bg">
+    <div class="player"></div>
+    <div class="controls">
       <div>
-        <div id=&quot;temperature&quot; class=&quot;mdc-slider&quot; tabindex=&quot;0&quot; role=&quot;slider&quot; aria-valuemin=&quot;0.2&quot; aria-valuemax=&quot;2&quot; aria-valuenow=&quot;1.1&quot;
-             aria-label=&quot;Select temperature&quot;>
-          <div class=&quot;mdc-slider__track-container&quot;>
-            <div class=&quot;mdc-slider__track&quot;></div>
+        <div id="temperature" class="mdc-slider" tabindex="0" role="slider" aria-valuemin="0.2" aria-valuemax="2" aria-valuenow="1.1"
+             aria-label="Select temperature">
+          <div class="mdc-slider__track-container">
+            <div class="mdc-slider__track"></div>
           </div>
-          <div class=&quot;mdc-slider__thumb-container&quot;>
-            <svg class=&quot;mdc-slider__thumb&quot; width=&quot;21&quot; height=&quot;21&quot;>
-              <circle cx=&quot;10.5&quot; cy=&quot;10.5&quot; r=&quot;7.875&quot;></circle>
+          <div class="mdc-slider__thumb-container">
+            <svg class="mdc-slider__thumb" width="21" height="21">
+              <circle cx="10.5" cy="10.5" r="7.875"></circle>
             </svg>
-            <div class=&quot;mdc-slider__focus-ring&quot;></div>
+            <div class="mdc-slider__focus-ring"></div>
           </div>
         </div>
         Temperature
       </div>
     </div>
   </div>
-  <div class=&quot;human-bg&quot;>
-    <div class=&quot;player&quot;></div>
-    <div class=&quot;controls&quot;>
-      <div class=&quot;midi-not-supported&quot;>
+  <div class="human-bg">
+    <div class="player"></div>
+    <div class="controls">
+      <div class="midi-not-supported">
         Play and hold a melody or chord using the
-        <a href=&quot;https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067&quot;
-           target=&quot;_blank&quot;>computer keyboard</a>, or with a MIDI controller on
-        <a href=&quot;https://caniuse.com/#feat=midi&quot; target=&quot;_blank&quot;>a MIDI capable web browser</a>.</div>
-      <div class=&quot;midi-supported-no-inputs&quot; style=&quot;display: none&quot;>
+        <a href="https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067"
+           target="_blank">computer keyboard</a>, or with a MIDI controller on
+        <a href="https://caniuse.com/#feat=midi" target="_blank">a MIDI capable web browser</a>.</div>
+      <div class="midi-supported-no-inputs" style="display: none">
         Play and hold a melody or chord using a MIDI controller or
-        <a href=&quot;https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067&quot;
-           target=&quot;_blank&quot;>computer keyboard</a>.</div>
-      <div class=&quot;midi-supported-with-inputs&quot; style=&quot;display: none&quot;>
+        <a href="https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067"
+           target="_blank">computer keyboard</a>.</div>
+      <div class="midi-supported-with-inputs" style="display: none">
         Play and hold a melody or chord using MIDI controller
-        <div class=&quot;mdc-select mdc-select--theme-light&quot;>
-          <select id=&quot;midi-inputs&quot; class=&quot;mdc-select__surface&quot; role=&quot;presentation&quot;></select>
-          <div class=&quot;mdc-select__bottom-line&quot;></div>
+        <div class="mdc-select mdc-select--theme-light">
+          <select id="midi-inputs" class="mdc-select__surface" role="presentation"></select>
+          <div class="mdc-select__bottom-line"></div>
         </div> or
-        <a href=&quot;https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067&quot;
-           target=&quot;_blank&quot;>computer keyboard</a>.</div>
+        <a href="https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067"
+           target="_blank">computer keyboard</a>.</div>
       <p>A
-        <a href=&quot;https://github.com/tensorflow/magenta/tree/master/magenta/models/improv_rnn&quot; target=&quot;_blank&quot;>neural network</a> will pick up where you left off and it'll keep playing for as long as you hold the keys down.</p>
+        <a href="https://github.com/tensorflow/magenta/tree/master/magenta/models/improv_rnn" target="_blank">neural network</a> will pick up where you left off and it'll keep playing for as long as you hold the keys down.</p>
       <p>Using the
-    <a href=&quot;https://github.com/tensorflow/magenta/tree/master/magenta/models/improv_rnn&quot;>Improv RNN</a> (pretrained) model from
-    <a href=&quot;https://magenta.tensorflow.org/&quot;>Google Magenta</a>, and
-    <a href=&quot;https://goo.gl/magenta/js&quot;>Magenta.js</a> + 
-    <a href=&quot;https://js.tensorflow.org/&quot;>TensorFlow.js</a> +
-    <a href=&quot;https://tonejs.github.io/&quot;>Tone.js</a>.</p>
+    <a href="https://github.com/tensorflow/magenta/tree/master/magenta/models/improv_rnn">Improv RNN</a> (pretrained) model from
+    <a href="https://magenta.tensorflow.org/">Google Magenta</a>, and
+    <a href="https://goo.gl/magenta/js">Magenta.js</a> + 
+    <a href="https://js.tensorflow.org/">TensorFlow.js</a> +
+    <a href="https://tonejs.github.io/">Tone.js</a>.</p>
     </div>
   </div>
-  <div class=&quot;keyboard&quot;>
+  <div class="keyboard">
   </div>
-  <div class=&quot;loading&quot;>
+  <div class="loading">
     Loading...
   </div>
 </div>
-    <script src=&quot;https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js&quot;></script>
+    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
 
   <script src='https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/tone@0.12.62/build/Tone.min.js'></script>
@@ -295,7 +239,7 @@ a:visited {
 <script src='https://cdn.jsdelivr.net/npm/babel-regenerator-runtime@6.5.0/runtime.min.js'></script>
 <script src='https://cdn.rawgit.com/danigb/tonal/9b6b1663/dist/tonal.min.js'></script>
   
-      <script id=&quot;rendered-js&quot; >
+      <script id="rendered-js" >
 const MIN_NOTE = 48;
 const MAX_NOTE = 84;
 
@@ -501,7 +445,7 @@ function updateChord({ add = null, remove = null }) {
   if (add) {
     currentSeed.push({ note: add, time: Tone.now() });
   }
-  if (remove &amp;&amp; _.some(currentSeed, { note: remove })) {
+  if (remove && _.some(currentSeed, { note: remove })) {
     _.remove(currentSeed, { note: remove });
   }
 
@@ -509,7 +453,7 @@ function updateChord({ add = null, remove = null }) {
     stopCurrentSequenceGenerator();
     stopCurrentSequenceGenerator = null;
   }
-  if (currentSeed.length &amp;&amp; !stopCurrentSequenceGenerator) {
+  if (currentSeed.length && !stopCurrentSequenceGenerator) {
     resetState = true;
     stopCurrentSequenceGenerator = startSequenceGenerator(
     _.cloneDeep(currentSeed));
@@ -630,7 +574,7 @@ WebMidi.enable(err => {
 
 });
 
-// Mouse &amp; touch Controls
+// Mouse & touch Controls
 
 let pointedNotes = new Set();
 
@@ -667,7 +611,7 @@ onScreenKeyboard.forEach((noteEl, index) => {
     evt.preventDefault();
   });
   noteEl.addEventListener('mouseover', () => {
-    if (pointedNotes.size &amp;&amp; !pointedNotes.has(MIN_NOTE + index)) {
+    if (pointedNotes.size && !pointedNotes.has(MIN_NOTE + index)) {
       humanKeyDown(MIN_NOTE + index);
       pointedNotes.add(MIN_NOTE + index);
     }
@@ -735,10 +679,4 @@ StartAudioContext(Tone.context, document.documentElement);
 
 </body>
 
-</html>
- 
-" sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation  allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; vr" allowTransparency="true" allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
-      </iframe>
-</div>
-</body>
 </html>

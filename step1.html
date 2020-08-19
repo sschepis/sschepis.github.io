@@ -1,546 +1,672 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-<meta name="apple-mobile-web-app-title" content="CodePen">
-<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
-<meta charset="utf-8">
-<meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>CodePen - Step</title>
-<link rel="stylesheet" media="screen" href="https://static.codepen.io/assets/fullpage/fullpage-4de243a40619a967c0bf13b95e1ac6f8de89d943b7fc8710de33f681fe287604.css" />
-<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900,900italic" rel="stylesheet" />
-<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-<meta name="apple-mobile-web-app-title" content="CodePen">
-<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
-<title>CodePen - Step</title>
-<script>
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage("resize", "*");
-  }
-</script>
 <style>
-    html { font-size: 15px; }
-    html, body { margin: 0; padding: 0; min-height: 100%; }
-    body { height:100%; display: flex; flex-direction: column; }
-    .referer-warning {
-      background: black;
-      box-shadow: 0 2px 5px rgba(0,0,0, 0.5);
-      padding: 0.75em;
-      color: white;
-      text-align: center;
-      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, Sans-Serif;
-      line-height: 1.2;
-      font-size: 1rem;
-      position: relative;
-      z-index: 2;
-    }
-    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
-    .referer-warning a { color: #56bcf9; } /* $linkColorOnBlack */
-  </style>
-</head>
-<body class="">
-<div class="referer-warning">
-</div>
-<div id="result-iframe-wrap" role="main">
-<iframe id="result" srcdoc="
-<!DOCTYPE html>
-<html lang=&quot;en&quot; >
-
-<head>
-
-  <meta charset=&quot;UTF-8&quot;>
+  html {
+    min-height: 100%;
+    font-family: Poppins, Helvetica, Arial, sans-serif;
+    background: #336699;
+    background: -webkit-gradient(linear, left top, right bottom, from(#336699), to(#000));
+    background: linear-gradient(to bottom right, #336699, #000);
+  }
   
-<link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
-<meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
-
-<link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
-
-<link rel=&quot;mask-icon&quot; type=&quot;&quot; href=&quot;https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg&quot; color=&quot;#111&quot; />
-
-
-  <title>CodePen - Step</title>
-  <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;>
-
-<link href='https://fonts.googleapis.com/css?family=Poppins:400,600' rel='stylesheet' type='text/css'>
-  <link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css&quot;>
-
+  body {
+    height: 100%;
+    margin: 0;
+    font-size: 16px;
+  }
   
+  body.no-overflow {
+    overflow: hidden;
+  }
   
-<style>
-html {
-  min-height: 100%;
-  font-family: Poppins, Helvetica, Arial, sans-serif;
-  background: #EB3349;
-  background: -webkit-gradient(linear, left top, right bottom, from(#EB3349), to(#F45C43));
-  background: linear-gradient(to bottom right, #EB3349, #F45C43);
-}
-
-body {
-  height: 100%;
-  margin: 0;
-  font-size: 16px;
-}
-
-body.no-overflow {
-  overflow: hidden;
-}
-
-#aligner {
-  height: 100%;
-  min-height: 99vh;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
-}
-
-#aligner * {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-h1 {
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-  color: #F36E6B;
-  letter-spacing: 10px;
-}
-
-#board {
-  margin: 10px 0 0 0;
-  position: relative;
-  -webkit-box-flex: 0;
-          flex: none;
-  width: 480px;
-  font-size: 0;
-  background-color: transparent;
-  cursor: crosshair;
-  overflow: hidden;
-}
-
-.holder {
-  display: inline-block;
-  height: 24px;
-  width: 24px;
-  margin: 3px;
-  border-radius: 2px;
-  background-color: #F36E6B;
-}
-
-.forward .holder {
-  -webkit-animation: line 3s linear infinite;
-          animation: line 3s linear infinite;
-}
-.forward .holder:nth-child(16n + 0) {
-  -webkit-animation-delay: 0s;
-          animation-delay: 0s;
-}
-.forward .holder:nth-child(16n + 1) {
-  -webkit-animation-delay: 0.1875s;
-          animation-delay: 0.1875s;
-}
-.forward .holder:nth-child(16n + 2) {
-  -webkit-animation-delay: 0.375s;
-          animation-delay: 0.375s;
-}
-.forward .holder:nth-child(16n + 3) {
-  -webkit-animation-delay: 0.5625s;
-          animation-delay: 0.5625s;
-}
-.forward .holder:nth-child(16n + 4) {
-  -webkit-animation-delay: 0.75s;
-          animation-delay: 0.75s;
-}
-.forward .holder:nth-child(16n + 5) {
-  -webkit-animation-delay: 0.9375s;
-          animation-delay: 0.9375s;
-}
-.forward .holder:nth-child(16n + 6) {
-  -webkit-animation-delay: 1.125s;
-          animation-delay: 1.125s;
-}
-.forward .holder:nth-child(16n + 7) {
-  -webkit-animation-delay: 1.3125s;
-          animation-delay: 1.3125s;
-}
-.forward .holder:nth-child(16n + 8) {
-  -webkit-animation-delay: 1.5s;
-          animation-delay: 1.5s;
-}
-.forward .holder:nth-child(16n + 9) {
-  -webkit-animation-delay: 1.6875s;
-          animation-delay: 1.6875s;
-}
-.forward .holder:nth-child(16n + 10) {
-  -webkit-animation-delay: 1.875s;
-          animation-delay: 1.875s;
-}
-.forward .holder:nth-child(16n + 11) {
-  -webkit-animation-delay: 2.0625s;
-          animation-delay: 2.0625s;
-}
-.forward .holder:nth-child(16n + 12) {
-  -webkit-animation-delay: 2.25s;
-          animation-delay: 2.25s;
-}
-.forward .holder:nth-child(16n + 13) {
-  -webkit-animation-delay: 2.4375s;
-          animation-delay: 2.4375s;
-}
-.forward .holder:nth-child(16n + 14) {
-  -webkit-animation-delay: 2.625s;
-          animation-delay: 2.625s;
-}
-.forward .holder:nth-child(16n + 15) {
-  -webkit-animation-delay: 2.8125s;
-          animation-delay: 2.8125s;
-}
-.forward .holder:nth-child(16n + 16) {
-  -webkit-animation-delay: 3s;
-          animation-delay: 3s;
-}
-
-.loading .holder {
-  -webkit-animation: pulse 3s infinite;
-          animation: pulse 3s infinite;
-}
-
-.note {
-  background-color: transparent;
-  border-radius: 2px;
-  width: 100%;
-  height: 100%;
-  -webkit-transition: all 0.1s;
-  transition: all 0.1s;
-}
-
-.note.active {
-  background-color: #FFF;
-  box-shadow: 0 0 5px #FFF;
-}
-
-#file-controls {
-  position: fixed;
-  background: rgba(255, 255, 255, 0.1);
-  top: 0;
-  right: 0;
-}
-
-.button {
-  display: inline-block;
-  background-color: #F36E6B;
-  width: 50px;
-  height: 50px;
-  border-radius: 2px;
-  text-align: center;
-  margin: 10px;
-  cursor: crosshair;
-  vertical-align: bottom;
-  -webkit-transition: 0.1s all;
-  transition: 0.1s all;
-}
-.button svg {
-  fill: rgba(255, 255, 255, 0.5);
-  width: 20px;
-  height: 20px;
-  -webkit-transform: translateY(15px);
-          transform: translateY(15px);
-}
-.button:hover {
-  background-color: #FCD7D6;
-}
-.button:active {
-  height: 45px;
-}
-.button:hover > svg {
-  fill: #F45C43;
-}
-
-.alt {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-}
-.alt svg {
-  fill: #FCD7D6;
-  width: 25px;
-  height: 25px;
-  opacity: 0.6;
-  -webkit-transform: translateY(12px);
-          transform: translateY(12px);
-}
-.alt:hover > svg {
-  opacity: 1;
-}
-
-#audio rect {
-  display: inline-block;
-}
-#audio.mute rect {
-  display: none;
-}
-
-.ripple {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 100%;
-  width: 24px;
-  height: 24px;
-  z-index: -1;
-  opacity: 1;
-  -webkit-transform: scale(0);
-          transform: scale(0);
-}
-
-.huzzar {
-  opacity: 0;
-  -webkit-transform: scale(8);
-          transform: scale(8);
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
-}
-
-#markers {
-  text-align: center;
-  cursor: default;
-  margin: 10px 0 0 0;
-  position: relative;
-  -webkit-box-flex: 0;
-          flex: none;
-  width: 480px;
-  font-size: 0;
-}
-#markers span {
-  font-size: 2rem;
-  display: inline-block;
-  height: 24px;
-  width: 24px;
-  margin: 3px;
-  margin-bottom: 0;
-  background-color: none;
-  line-height: 8px;
-  color: #F36E6B;
-}
-
-.ui-dialog {
-  z-index: 1001;
-  font-size: 1rem;
-  border-radius: 5px;
-  color: rgba(255, 255, 255, 0.65);
-  background: #EB3349;
-  box-shadow: 0 50px 100px -25px rgba(0, 0, 0, 0.4), 0 0 200px -50px rgba(255, 255, 255, 0.4);
-  padding: 10px;
-  border: none;
-  outline: none;
-}
-.ui-dialog textarea {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  color: rgba(255, 255, 255, 0.9);
-  outline: none;
-  border: none;
-  padding: 2px;
-  border-radius: 5px;
-  min-height: 150px;
-  resize: none;
-  cursor: text;
-}
-.ui-dialog textarea::-moz-selection {
-  background: rgba(98, 191, 237, 0.99);
-  color: #FFF;
-}
-.ui-dialog textarea::selection {
-  background: rgba(98, 191, 237, 0.99);
-  color: #FFF;
-}
-
-.ui-dialog-titlebar {
-  cursor: move;
-  font-size: 1.4rem;
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.ui-dialog-titlebar-close {
-  height: 30px;
-  width: 30px;
-  line-height: 30px;
-  font-size: 30px;
-  background: transparent;
-  border: none;
-  outline: none;
-  float: right;
-  -webkit-transition: 0.1s all;
-  transition: 0.1s all;
-}
-.ui-dialog-titlebar-close:hover {
-  color: #FFF;
-}
-
-.ui-dialog-buttonpane {
-  padding: 10px 0;
-  text-align: center;
-}
-
-.ui-dialog-buttonset button {
-  border: none;
-  outline: none;
-  background: rgba(255, 255, 255, 0.8);
-  color: #EB3349;
-  border-radius: 2px;
-}
-
-#ui-widget-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #000;
-  opacity: 0;
-  z-index: -1;
-  -webkit-transition: z-index 0s 0.2s, opacity 0.2s;
-  transition: z-index 0s 0.2s, opacity 0.2s;
-}
-
-#ui-widget-overlay.visible {
-  cursor: default;
-  opacity: 0.6;
-  z-index: 1000;
-  -webkit-transition: z-index 0s, opacity 0.2s;
-  transition: z-index 0s, opacity 0.2s;
-}
-
-.ui-helper-hidden-accessible {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-}
-
-#social-container {
-  opacity: 0.6;
-  bottom: 5px;
-  right: 5px;
-}
-
-#social-container p {
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-#social-container #social-links a {
-  font-size: 2rem;
-}
-
-#social-message {
-  font-size: 0.8rem;
-}
-
-@-webkit-keyframes line {
-  0% {
-    background: #FCD7D6;
+  #aligner {
+    height: 100%;
+    min-height: 99vh;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+            justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+            flex-direction: column;
   }
-  30% {
-    background: #F36E6B;
+  
+  #aligner * {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
   }
-}
-
-@keyframes line {
-  0% {
-    background: #FCD7D6;
+  
+  h1 {
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+    color: #c3c3c3;
+    letter-spacing: 10px;
   }
-  30% {
-    background: #F36E6B;
+  
+  #board {
+    margin: 10px 0 0 0;
+    position: relative;
+    -webkit-box-flex: 0;
+            flex: none;
+    width: 480px;
+    font-size: 0;
+    background-color: transparent;
+    cursor: crosshair;
+    overflow: hidden;
   }
-}
-@-webkit-keyframes pulse {
-  40% {
-    background: #FCD7D6;
+  
+  .holder {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin: 3px;
+    border-radius: 15px;
+    background-color: #c3c3c3;
   }
-}
-@keyframes pulse {
-  40% {
-    background: #FCD7D6;
+  
+  .forward .holder {
+    -webkit-animation: line 3s linear infinite;
+            animation: line 3s linear infinite;
   }
-}
-@media (max-width: 480px) {
-  #social-container #social-links, #social-container #tooltip {
+  .forward .holder:nth-child(16n + 0) {
+    -webkit-animation-delay: 0s;
+            animation-delay: 0s;
+  }
+  .forward .holder:nth-child(16n + 1) {
+    -webkit-animation-delay: 0.1875s;
+            animation-delay: 0.1875s;
+  }
+  .forward .holder:nth-child(16n + 2) {
+    -webkit-animation-delay: 0.375s;
+            animation-delay: 0.375s;
+  }
+  .forward .holder:nth-child(16n + 3) {
+    -webkit-animation-delay: 0.5625s;
+            animation-delay: 0.5625s;
+  }
+  .forward .holder:nth-child(16n + 4) {
+    -webkit-animation-delay: 0.75s;
+            animation-delay: 0.75s;
+  }
+  .forward .holder:nth-child(16n + 5) {
+    -webkit-animation-delay: 0.9375s;
+            animation-delay: 0.9375s;
+  }
+  .forward .holder:nth-child(16n + 6) {
+    -webkit-animation-delay: 1.125s;
+            animation-delay: 1.125s;
+  }
+  .forward .holder:nth-child(16n + 7) {
+    -webkit-animation-delay: 1.3125s;
+            animation-delay: 1.3125s;
+  }
+  .forward .holder:nth-child(16n + 8) {
+    -webkit-animation-delay: 1.5s;
+            animation-delay: 1.5s;
+  }
+  .forward .holder:nth-child(16n + 9) {
+    -webkit-animation-delay: 1.6875s;
+            animation-delay: 1.6875s;
+  }
+  .forward .holder:nth-child(16n + 10) {
+    -webkit-animation-delay: 1.875s;
+            animation-delay: 1.875s;
+  }
+  .forward .holder:nth-child(16n + 11) {
+    -webkit-animation-delay: 2.0625s;
+            animation-delay: 2.0625s;
+  }
+  .forward .holder:nth-child(16n + 12) {
+    -webkit-animation-delay: 2.25s;
+            animation-delay: 2.25s;
+  }
+  .forward .holder:nth-child(16n + 13) {
+    -webkit-animation-delay: 2.4375s;
+            animation-delay: 2.4375s;
+  }
+  .forward .holder:nth-child(16n + 14) {
+    -webkit-animation-delay: 2.625s;
+            animation-delay: 2.625s;
+  }
+  .forward .holder:nth-child(16n + 15) {
+    -webkit-animation-delay: 2.8125s;
+            animation-delay: 2.8125s;
+  }
+  .forward .holder:nth-child(16n + 16) {
+    -webkit-animation-delay: 3s;
+            animation-delay: 3s;
+  }
+  
+  .loading .holder {
+    -webkit-animation: pulse 3s infinite;
+            animation: pulse 3s infinite;
+  }
+  
+  .note {
+    background-color: transparent;
+    border-radius: 0px;
+    width: 100%;
+    height: 100%;
+    -webkit-transition: all 0.1s;
+    transition: all 0.1s;
+  }
+  
+  .note.active {
+    background-color: #FFF;
+    box-shadow: 0 0 5px #FFF;
+  }
+  
+  #file-controls {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.1);
+    top: 0;
+    right: 0;
+  }
+  
+  .button {
+    display: inline-block;
+    background-color: #c3c3c3;
+    width: 50px;
+    height: 50px;
+    border-radius: 2px;
+    text-align: center;
+    margin: 10px;
+    cursor: crosshair;
+    vertical-align: bottom;
+    -webkit-transition: 0.1s all;
+    transition: 0.1s all;
+  }
+  .button svg {
+    fill: rgba(255, 255, 255, 0.5);
+    width: 20px;
+    height: 20px;
+    -webkit-transform: translateY(15px);
+            transform: translateY(15px);
+  }
+  .button:hover {
+    background-color: #ff9900;
+  }
+  .button:active {
+    height: 45px;
+  }
+  .button:hover > svg {
+    fill: #000;
+  }
+  
+  .alt {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+  }
+  .alt svg {
+    fill: #ff9900;
+    width: 25px;
+    height: 25px;
+    opacity: 0.6;
+    -webkit-transform: translateY(12px);
+            transform: translateY(12px);
+  }
+  .alt:hover > svg {
+    opacity: 1;
+  }
+  
+  #audio rect {
+    display: inline-block;
+  }
+  #audio.mute rect {
     display: none;
   }
-
-  #board {
-    width: 352px;
-  }
-
-  .holder {
-    height: 20px;
-    width: 20px;
-    margin: 1px;
-    border-radius: 0;
-  }
-
-  .note {
-    border-radius: 0;
-  }
-
+  
   .ripple {
-    height: 20px;
-    width: 20px;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+    z-index: -1;
+    opacity: 1;
+    -webkit-transform: scale(0);
+            transform: scale(0);
   }
-
+  
+  .huzzar {
+    opacity: 0;
+    -webkit-transform: scale(8);
+            transform: scale(8);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+  }
+  
   #markers {
-    width: 352px;
+    text-align: center;
+    cursor: default;
+    margin: 10px 0 0 0;
+    position: relative;
+    -webkit-box-flex: 0;
+            flex: none;
+    width: 480px;
+    font-size: 0;
   }
   #markers span {
-    height: 20px;
-    width: 20px;
-    margin: 1px;
+    font-size: 2rem;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    margin: 3px;
+    margin-bottom: 0;
+    background-color: none;
+    line-height: 8px;
+    color: #c3c3c3;
   }
-}
-@media (max-height: 700px) {
-  #aligner {
-    -webkit-box-pack: start;
-            justify-content: flex-start;
-    padding: 20px;
+  
+  .ui-dialog {
+    z-index: 1001;
+    font-size: 1rem;
+    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.65);
+    background: #336699;
+    box-shadow: 0 50px 100px -25px rgba(0, 0, 0, 0.4), 0 0 200px -50px rgba(255, 255, 255, 0.4);
+    padding: 10px;
+    border: none;
+    outline: none;
   }
-}
+  .ui-dialog textarea {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    outline: none;
+    border: none;
+    padding: 2px;
+    border-radius: 5px;
+    min-height: 150px;
+    resize: none;
+    cursor: text;
+  }
+  .ui-dialog textarea::-moz-selection {
+    background: rgba(98, 191, 237, 0.99);
+    color: #FFF;
+  }
+  .ui-dialog textarea::selection {
+    background: rgba(98, 191, 237, 0.99);
+    color: #FFF;
+  }
+  
+  .ui-dialog-titlebar {
+    cursor: move;
+    font-size: 1.4rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .ui-dialog-titlebar-close {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-size: 30px;
+    background: transparent;
+    border: none;
+    outline: none;
+    float: right;
+    -webkit-transition: 0.1s all;
+    transition: 0.1s all;
+  }
+  .ui-dialog-titlebar-close:hover {
+    color: #FFF;
+  }
+  
+  .ui-dialog-buttonpane {
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .ui-dialog-buttonset button {
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.8);
+    color: #336699;
+    border-radius: 2px;
+  }
+  
+  #ui-widget-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000;
+    opacity: 0;
+    z-index: -1;
+    -webkit-transition: z-index 0s 0.2s, opacity 0.2s;
+    transition: z-index 0s 0.2s, opacity 0.2s;
+  }
+  
+  #ui-widget-overlay.visible {
+    cursor: default;
+    opacity: 0.6;
+    z-index: 1000;
+    -webkit-transition: z-index 0s, opacity 0.2s;
+    transition: z-index 0s, opacity 0.2s;
+  }
+  
+  .ui-helper-hidden-accessible {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  #social-container {
+    opacity: 0.6;
+    bottom: 5px;
+    right: 5px;
+  }
+  
+  #social-container p {
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+  
+  #social-container #social-links a {
+    font-size: 2rem;
+  }
+  
+  #social-message {
+    font-size: 0.8rem;
+  }
+  
+  @-webkit-keyframes line {
+    0% {
+      background: #ff9900;
+    }
+    30% {
+      background: #c3c3c3;
+    }
+  }
+  
+  @keyframes line {
+    0% {
+      background: #ff9900;
+    }
+    30% {
+      background: #c3c3c3;
+    }
+  }
+  @-webkit-keyframes pulse {
+    40% {
+      background: #ff9900;
+    }
+  }
+  @keyframes pulse {
+    40% {
+      background: #ff9900;
+    }
+  }
+  @media (max-width: 480px) {
+    #social-container #social-links, #social-container #tooltip {
+      display: none;
+    }
+  
+    #board {
+      width: 352px;
+    }
+  
+    .holder {
+      height: 20px;
+      width: 20px;
+      margin: 1px;
+      border-radius: 0;
+    }
+  
+    .note {
+      border-radius: 0;
+    }
+  
+    .ripple {
+      height: 20px;
+      width: 20px;
+    }
+  
+    #markers {
+      width: 352px;
+    }
+    #markers span {
+      height: 20px;
+      width: 20px;
+      margin: 1px;
+    }
+  }
+  @media (max-height: 700px) {
+    #aligner {
+      -webkit-box-pack: start;
+              justify-content: flex-start;
+      padding: 20px;
+    }
+  }
+  
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js" ></script>
+<script>
+/*
+     SANDER SAYS:
+     NO WARRANTIES EXPRESSED OR IMPLIED
+     FOR USING THIS CODE. ALL THIS HAS
+     HAPPENED BEFORE, AND IT WILL HAPPEN
+     AGAIN... BUT IT DOESN'T MATTER...
+     BECAUSE WE ARE IN THIS TOGETHER.
+     C'EST LA VIE. EVERYTHING COULD
+     HAVE BEEN ANYTHING ELSE, AND IT
+     WOULD HAVE JUST AS MUCH MEANING.
+     ENJOY. COMPLIMENTS? PARTY
+     INVITATIONS? RIGHT ON!
+*/
 
-  <script>
-  window.console = window.console || function(t) {};
+var buttons = 256,
+	rows = 16;
+var cols = rows;
+var wLoaded = false,
+	nLoaded = false;
+
+$(document).ready(function() {
+	var holder = $('#board .holder'),
+		note = $('.note');
+	var notes = [];
+
+	for (var i = 0; i < rows; i++) {
+		notes[i] = new Howl({
+			urls: ['https://s3-us-west-2.amazonaws.com/s.cdpn.io/380275/' + i + '.mp3',
+				'https://s3-us-west-2.amazonaws.com/s.cdpn.io/380275/' + i + '.ogg'
+			],
+			onload: loadCount(i + 1)
+		});
+	}
+
+	$(window).load(function() {
+		bindUserActions();
+		initControls();
+
+		wLoaded = true;
+		if (nLoaded)
+			$('#board').removeClass('loading').addClass('forward');
+
+		for (var i = 0; i < rows; i++) {
+			bindNote(i);
+		}
+	});
+
+	function loadCount(i) {
+		if (i === rows) {
+			nLoaded = true;
+			if (wLoaded)
+				$('#board').removeClass('loading').addClass('forward');
+		}
+	}
+
+	function bindNote(currNote) {
+		$('#board .holder:nth-child(' + cols + 'n + ' + currNote + ')')
+		.on('webkitAnimationIteration mozAnimationIteration animationiteration', 
+		function() {
+			if ($(this).hasClass('active')) {
+				var currNote = $(this).attr('data-note');
+				notes[currNote].play();
+
+				$(this).find('.ripple').addClass('huzzar').delay(500).queue(function() {
+					$(this).removeClass('huzzar').dequeue();
+				});
+			}
+		});
+	}
+
+	function bindUserActions() {
+		$(note).mousedown(function() {
+			$(this).toggleClass("active");
+			$(this).parent().toggleClass("active");
+		});
+		$(document).mousedown(function() {
+			$(note).bind('mouseover', function() {
+				$(this).toggleClass("active");
+				$(this).parent().toggleClass("active");
+			});
+		}).mouseup(function() {
+			$(note).unbind('mouseover');
+		});
+		$("#dialogSave").dialog({
+			autoOpen: false,
+			modal: true,
+			closeText: "&#10006;",
+			hide: 200
+		});
+		$("#dialogLoad").dialog({
+			autoOpen: false,
+			buttons: [{
+				text: "Play",
+				click: function() {
+					importLoop($(this));
+				}
+			}],
+			modal: true,
+			closeText: "&#10006;",
+			hide: 200
+		});
+	}
+
+	function initControls() {
+		$('#reset').on('click', function() {
+			$('.active').removeClass('active');
+		});
+		$('#audio').on('click', function() {
+			if ($(this).hasClass("mute"))
+				Howler.unmute();
+			else
+				Howler.mute();
+			$(this).toggleClass('mute');
+		});
+		$('#save').on('click', function() {
+			if ($(".dialog").dialog("isOpen") !== true)
+				exportLoop();
+		});
+		$('#load').on('click', function() {
+			if ($(".dialog").dialog("isOpen") !== true)
+				$("#dialogLoad").dialog("open");
+		});
+
+		$('.ui-dialog').on('dialogopen', function(event) {
+			$('body').addClass('no-overflow');
+			Howler.volume(0.5);
+			$('#ui-widget-overlay').addClass('visible');
+		}).on('dialogclose', function(event) {
+			$('body').removeClass('no-overflow');
+			Howler.volume(1);
+			$('textarea#saveCode').val('');
+			$('#ui-widget-overlay').removeClass('visible');
+		});
+	}
+
+	//:x represents ON //;x represents OFF
+	function exportLoop() {
+		var noteCode = "",
+			offCount = 0,
+			onCount = 0;
+
+		holder.each(function() {
+			if ($(this).hasClass('active')) {
+				if (offCount > 0)
+					noteCode = noteCode + ";" + offCount;
+				onCount++;
+				offCount = 0;
+			} else {
+				if (onCount > 0)
+					noteCode = noteCode + ":" + onCount + " ";
+				offCount++;
+				onCount = 0;
+			}
+		});
+
+		if (offCount > 0)
+			noteCode = noteCode + ";" + offCount;
+		else if (onCount > 0)
+			noteCode = noteCode + ":" + onCount;
+
+		$("#saveCode").val("[" + noteCode + "]");
+		$("#dialogSave").dialog("open");
+	}
+
+	function importLoop(dialog) {
+		var noteCode = '',
+			 noteState,
+			 error = false,
+			 note;
+
+		noteCode = dialog.find('textarea#importCode').val();
+		dialog.dialog("close");
+
+		noteCode = noteCode.replace("[", "");
+		noteCode = noteCode.replace("]", "");
+
+		if (noteCode.charAt(0) === ":")
+			noteState = 1;
+		else if (noteCode.charAt(0) === ";")
+			noteState = 0;
+		else {
+			alert("Your note code wasn't recognised");
+			error = true;
+		}
+
+		if (!error) {
+			$('.active').removeClass('active');
+			noteCode = noteCode.substr(1);
+			var splitCode = noteCode.split(/:|;/g);
+			var noteCounter = 0;
+
+			for (i = 0; i < splitCode.length; i++) {
+				var currNum = parseInt(splitCode[i]);
+
+				if (noteState) {
+					for (var n = 0; n < currNum; n++) {
+						noteCounter++;
+						note = $('#board span:nth-child(' + noteCounter + ')');
+						note.addClass('active');
+						note.children().addClass('active');
+					}
+				} else {
+					noteCounter = noteCounter + currNum;
+				}
+				noteState = !noteState;
+			}
+		}
+	}
+});
 </script>
-
-  
-  
-  <script>
-  if (document.location.search.match(/type=embed/gi)) {
-    window.parent.postMessage(&quot;resize&quot;, &quot;*&quot;);
-  }
-</script>
-
-
-</head>
-
-<body translate=&quot;no&quot; >
-  <div id='aligner'>
-  <h1>step</h1>
+<div id='aligner'>
+  <h1>ALIEN MUSIC SEQUENCER</h1>
   <!-- STEP SEQUENCER BOARD -->
   <div class='loading' id='board'>
     <span class='holder' data-note='0'>
@@ -1826,22 +1952,22 @@ h1 {
   </div>
   <!-- BEAT MARKERS -->
   <div id='markers'>
-    <span>&amp;#8226;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#8226;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#8226;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#8226;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
-    <span>&amp;#9702;</span>
+    <span>&#8226;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#8226;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#8226;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#8226;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
+    <span>&#9702;</span>
   </div>
   <!-- CONTROLS -->
   <!-- All SVG icons from www.flaticon.com -->
@@ -1861,7 +1987,7 @@ h1 {
     </div>
   </div>
 </div>
-<!-- PIN &amp; LOAD CONTROLS -->
+<!-- PIN & LOAD CONTROLS -->
 <div id='file-controls'>
   <div class='button alt' id='save'>
     <svg version='1.1' viewBox='0 0 319 319' xmlns='http://www.w3.org/2000/svg'>
@@ -1878,236 +2004,17 @@ h1 {
 </div>
 <!-- UI POPUPS -->
 <div id='ui-widget-overlay'></div>
-<div class='dialog' id='dialogSave' title='Save or share your loop'>
-  <p>Copy &amp; save this code to come back to your song later.</p>
+<div class='dialog' id='dialogSave' title='Save or share music'>
+  <p>If you copy and save this code, you can return here and paste it to re-create your music loop.</p>
   <span class='ui-helper-hidden-accessible'>
     <input type='text'>
   </span>
   <textarea id='saveCode' onfocus='this.select()' readonly='readonly' type='text'></textarea>
 </div>
-<div class='dialog' id='dialogLoad' title='Paste your loop...'>
+<div class='dialog' id='dialogLoad' title='Paste a music loop'>
   <p>
-    It should look something like:
+    Your code should look like this:
     <br>[;24:1 ;37:1 ;80:1 ;84:1 ;7:1 ;3:1 ;15]</br>
     <textarea id='importCode' type='text'></textarea>
   </p>
 </div>
-    <script src=&quot;https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js&quot;></script>
-
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/howler/1.1.28/howler.min.js'></script>
-<script src='https://codepen.io/woodwoerk/pen/XXZaGQ.js'></script>
-  
-      <script id=&quot;rendered-js&quot; >
-var buttons = 256,
-rows = 16;
-var cols = rows;
-var wLoaded = false,
-nLoaded = false;
-
-$(document).ready(function () {
-  var holder = $('#board .holder'),
-  note = $('.note');
-  var notes = [];
-
-  for (var i = 0; i < rows; i++) {if (window.CP.shouldStopExecution(0)) break;
-    notes[i] = new Howl({
-      urls: ['https://s3-us-west-2.amazonaws.com/s.cdpn.io/380275/' + i + '.mp3',
-      'https://s3-us-west-2.amazonaws.com/s.cdpn.io/380275/' + i + '.ogg'],
-
-      onload: loadCount(i + 1) });
-
-  }window.CP.exitedLoop(0);
-
-  $(window).load(function () {
-    bindUserActions();
-    initControls();
-
-    wLoaded = true;
-    if (nLoaded)
-    $('#board').removeClass('loading').addClass('forward');
-
-    for (var i = 0; i < rows; i++) {if (window.CP.shouldStopExecution(1)) break;
-      bindNote(i);
-    }window.CP.exitedLoop(1);
-  });
-
-  function loadCount(i) {
-    if (i === rows) {
-      nLoaded = true;
-      if (wLoaded)
-      $('#board').removeClass('loading').addClass('forward');
-    }
-  }
-
-  function bindNote(currNote) {
-    $('#board .holder:nth-child(' + cols + 'n + ' + currNote + ')').
-    on('webkitAnimationIteration mozAnimationIteration animationiteration',
-    function () {
-      if ($(this).hasClass('active')) {
-        var currNote = $(this).attr('data-note');
-        notes[currNote].play();
-
-        $(this).find('.ripple').addClass('huzzar').delay(500).queue(function () {
-          $(this).removeClass('huzzar').dequeue();
-        });
-      }
-    });
-  }
-
-  function bindUserActions() {
-    $(note).mousedown(function () {
-      $(this).toggleClass(&quot;active&quot;);
-      $(this).parent().toggleClass(&quot;active&quot;);
-    });
-    $(document).mousedown(function () {
-      $(note).bind('mouseover', function () {
-        $(this).toggleClass(&quot;active&quot;);
-        $(this).parent().toggleClass(&quot;active&quot;);
-      });
-    }).mouseup(function () {
-      $(note).unbind('mouseover');
-    });
-    $(&quot;#dialogSave&quot;).dialog({
-      autoOpen: false,
-      modal: true,
-      closeText: &quot;&amp;#10006;&quot;,
-      hide: 200 });
-
-    $(&quot;#dialogLoad&quot;).dialog({
-      autoOpen: false,
-      buttons: [{
-        text: &quot;Play&quot;,
-        click: function () {
-          importLoop($(this));
-        } }],
-
-      modal: true,
-      closeText: &quot;&amp;#10006;&quot;,
-      hide: 200 });
-
-  }
-
-  function initControls() {
-    $('#reset').on('click', function () {
-      $('.active').removeClass('active');
-    });
-    $('#audio').on('click', function () {
-      if ($(this).hasClass(&quot;mute&quot;))
-      Howler.unmute();else
-
-      Howler.mute();
-      $(this).toggleClass('mute');
-    });
-    $('#save').on('click', function () {
-      if ($(&quot;.dialog&quot;).dialog(&quot;isOpen&quot;) !== true)
-      exportLoop();
-    });
-    $('#load').on('click', function () {
-      if ($(&quot;.dialog&quot;).dialog(&quot;isOpen&quot;) !== true)
-      $(&quot;#dialogLoad&quot;).dialog(&quot;open&quot;);
-    });
-
-    $('.ui-dialog').on('dialogopen', function (event) {
-      $('body').addClass('no-overflow');
-      Howler.volume(0.5);
-      $('#ui-widget-overlay').addClass('visible');
-    }).on('dialogclose', function (event) {
-      $('body').removeClass('no-overflow');
-      Howler.volume(1);
-      $('textarea#saveCode').val('');
-      $('#ui-widget-overlay').removeClass('visible');
-    });
-  }
-
-  //:x represents ON //;x represents OFF
-  function exportLoop() {
-    var noteCode = &quot;&quot;,
-    offCount = 0,
-    onCount = 0;
-
-    holder.each(function () {
-      if ($(this).hasClass('active')) {
-        if (offCount > 0)
-        noteCode = noteCode + &quot;;&quot; + offCount;
-        onCount++;
-        offCount = 0;
-      } else {
-        if (onCount > 0)
-        noteCode = noteCode + &quot;:&quot; + onCount + &quot; &quot;;
-        offCount++;
-        onCount = 0;
-      }
-    });
-
-    if (offCount > 0)
-    noteCode = noteCode + &quot;;&quot; + offCount;else
-    if (onCount > 0)
-    noteCode = noteCode + &quot;:&quot; + onCount;
-
-    $(&quot;#saveCode&quot;).val(&quot;[&quot; + noteCode + &quot;]&quot;);
-    $(&quot;#dialogSave&quot;).dialog(&quot;open&quot;);
-  }
-
-  function importLoop(dialog) {
-    var noteCode = '',
-    noteState,
-    error = false,
-    note;
-
-    noteCode = dialog.find('textarea#importCode').val();
-    dialog.dialog(&quot;close&quot;);
-
-    noteCode = noteCode.replace(&quot;[&quot;, &quot;&quot;);
-    noteCode = noteCode.replace(&quot;]&quot;, &quot;&quot;);
-
-    if (noteCode.charAt(0) === &quot;:&quot;)
-    noteState = 1;else
-    if (noteCode.charAt(0) === &quot;;&quot;)
-    noteState = 0;else
-    {
-      alert(&quot;Your note code wasn't recognised&quot;);
-      error = true;
-    }
-
-    if (!error) {
-      $('.active').removeClass('active');
-      noteCode = noteCode.substr(1);
-      var splitCode = noteCode.split(/:|;/g);
-      var noteCounter = 0;
-
-      for (i = 0; i < splitCode.length; i++) {if (window.CP.shouldStopExecution(2)) break;
-        var currNum = parseInt(splitCode[i]);
-
-        if (noteState) {
-          for (var n = 0; n < currNum; n++) {if (window.CP.shouldStopExecution(3)) break;
-            noteCounter++;
-            note = $('#board span:nth-child(' + noteCounter + ')');
-            note.addClass('active');
-            note.children().addClass('active');
-          }window.CP.exitedLoop(3);
-        } else {
-          noteCounter = noteCounter + currNum;
-        }
-        noteState = !noteState;
-      }window.CP.exitedLoop(2);
-    }
-  }
-});
-
-social(&quot;codepen/woodwork&quot;, &quot;twitter/joeharry__&quot;, &quot;light&quot;);
-//# sourceURL=pen.js
-    </script>
-
-  
-
-</body>
-
-</html>
- 
-" sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-presentation  allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; microphone; midi; payment; vr" allowTransparency="true" allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
-      </iframe>
-</div>
-</body>
-</html>

@@ -2749,11 +2749,40 @@ button:focus {
   padding-left: 6px;
   border-radius: 8px 8px 0px 0px;
 }
-.console-panel {
-  overflow: auto;
+div#console-panel.console-panel {
+  position: absolute;
   height: 100%;
+  width: 100%;
+  overflow: scroll;
+  background-color: #242424;
 }
 
+.abswrap {
+  position: absolute;
+  height: calc(100% - 10px);
+  width: calc(100% - 10px);
+  left: 5;
+  top: 5;
+}
+
+.editor-frame {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
 .input-panel {
   overflow: hidden;
   height: 100%;
@@ -2763,14 +2792,13 @@ button:focus {
   height: 100% !important;
 }
 
-.console-panel {
+.output-panel {
   overflow: hidden;
   height: 100%;
 }
 
-.output-panel {
-  overflow: hidden;
-  height: 100%;
+.ace_editor {
+  width: 100%;
 }
 
 .debug-console-app {
@@ -2783,12 +2811,16 @@ button:focus {
   overflow:hidden;
   border-radius: 0px 0px 8px 8px;
   height:100%;
+  padding:10px;
 }
 
 .editor-frame {
   overflow:hidden;
-  margin-left: 10px;
-  margin-right:10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #root {
