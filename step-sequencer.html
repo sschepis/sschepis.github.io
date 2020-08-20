@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<<title>Step Sequencer V1</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel='stylesheet' href='https://gridsound.github.io/gs-ui-components/gsuiSlider/gsuiSlider.css'>
+<link rel='stylesheet' href='https://codepen.io/gridsound/pen/wpZxYg.css'>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Inconsolata:400,700");
+@-webkit-keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes scale {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@-webkit-keyframes scale1 {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes scale1 {
+  0% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+            transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+body {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  font-family: Inconsolata;
+}
+
+.title {
+  margin: 0.25em;
+  text-shadow: 3px 3px 10px gray;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+.app {
+  text-align: center;
+  margin-top: 1rem;
+  display: inline-block;
+  background: #333;
+  border-radius: 10px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.4);
+  padding: 0.5em;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+  position: relative;
+}
+@media (max-width: 790px) {
+  .app {
+    -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+  }
+}
+@media (max-width: 700px) {
+  .app {
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+}
+@media (max-width: 630px) {
+  .app {
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
+  }
+}
+.app .container {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+}
+.app .container .checkbox:nth-child(9), .app .container .checkbox:nth-child(1) {
+  background: #5a5a5a;
+}
+.app .container .checkbox:nth-child(9).highlighted, .app .container .checkbox:nth-child(1).highlighted {
+  background: gray;
+}
+.app .container .checkbox.active.highlighted {
+  -webkit-animation: scale 0.05s;
+          animation: scale 0.05s;
+}
+.app .container .checkbox.active.highlighted.animate {
+  -webkit-animation: scale 0.05s;
+          animation: scale 0.05s;
+}
+.app .container .checkbox.animate {
+  -webkit-animation: scale1 0.2s;
+          animation: scale1 0.2s;
+}
+.app .container:nth-of-type(1) .checkbox.active {
+  background: aqua;
+}
+.app .container:nth-of-type(1) .checkbox.active.highlighted {
+  background: #33ffff;
+}
+.app .container:nth-of-type(2) .checkbox.active {
+  background: dodgerblue;
+}
+.app .container:nth-of-type(2) .checkbox.active.highlighted {
+  background: #51a9ff;
+}
+.app .container:nth-of-type(3) .checkbox.active {
+  background: violet;
+}
+.app .container:nth-of-type(3) .checkbox.active.highlighted {
+  background: #f4aff4;
+}
+.app .container:nth-of-type(4) .checkbox.active {
+  background: deeppink;
+}
+.app .container:nth-of-type(4) .checkbox.active.highlighted {
+  background: #ff47aa;
+}
+.app .container:nth-of-type(5) .checkbox.active {
+  background: orange;
+}
+.app .container:nth-of-type(5) .checkbox.active.highlighted {
+  background: #ffb733;
+}
+.app .container:nth-of-type(6) .checkbox.active {
+  background: teal;
+}
+.app .container:nth-of-type(6) .checkbox.active.highlighted {
+  background: #00b3b3;
+}
+.app .container:nth-of-type(7) .checkbox.active {
+  background: yellowgreen;
+}
+.app .container:nth-of-type(7) .checkbox.active.highlighted {
+  background: #aed75b;
+}
+.app .container:nth-of-type(8) .checkbox.active {
+  background: red;
+}
+.app .container:nth-of-type(8) .checkbox.active.highlighted {
+  background: #ff3333;
+}
+.app .container .checkbox {
+  background: gray;
+  height: 2em;
+  width: 2em;
+  margin: 0.5em;
+}
+.app .container .checkbox.highlighted {
+  background: #b3b3b3;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: white;
+  border-radius: 25px;
+  border: 0px solid #000101;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  height: 30px;
+  width: 30px;
+  border-radius: 7px;
+  background: repeating-linear-gradient(45deg, transparent, black 2px, rgba(0, 0, 0, 0.5) 2px, rgba(0, 0, 0, 0.4) 4px), -webkit-gradient(linear, left top, left bottom, from(#eee), to(#999));
+  background: repeating-linear-gradient(45deg, transparent, black 2px, rgba(0, 0, 0, 0.5) 2px, rgba(0, 0, 0, 0.4) 4px), linear-gradient(to bottom, #eee, #999);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -10px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: white;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: blue;
+  border-radius: 25px;
+  border: 0px solid #000101;
+}
+
+.bpm-value {
+  color: white;
+  font-size: 16px;
+  margin-top: 5px;
+  font-weight: 100;
+}
+
+.reverb-wrapper,
+.distortion-wrapper {
+  background: lightgray;
+  display: inline-block;
+  border-radius: 10px;
+}
+.reverb-wrapper .header,
+.distortion-wrapper .header {
+  background: white;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  padding: 0.25em;
+  border-radius: 10px 10px 0 0;
+}
+.reverb-wrapper .header .distortion-title,
+.distortion-wrapper .header .distortion-title {
+  font-size: 13px;
+  margin: 0;
+  margin-left: 0.25em;
+  font-weight: bold;
+  color: #333;
+}
+.reverb-wrapper .header .distortion-button,
+.distortion-wrapper .header .distortion-button {
+  background: gray;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+  border: 1px solid;
+}
+.reverb-wrapper .header .distortion-button:focus, .reverb-wrapper .header .distortion-button:active,
+.distortion-wrapper .header .distortion-button:focus,
+.distortion-wrapper .header .distortion-button:active {
+  outline: none;
+}
+.reverb-wrapper .header .distortion-button.active,
+.distortion-wrapper .header .distortion-button.active {
+  background: yellow;
+  border-color: #dbdb00;
+  box-shadow: 1px 1px 5px #dbdb00;
+}
+
+.slider-wrapper {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  padding: 1em;
+}
+
+.slider .gsuiSlider {
+  --gsuiSlider-lineColor: #f55;
+}
+
+.slider {
+  height: 60px;
+}
+
+.slider-title {
+  color: black;
+  margin-bottom: 0;
+  margin-top: 0.5em;
+}
+
+.dist-value-title {
+  color: black;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 16x;
+}
+
+.clear, .demo {
+  border: 0;
+  background: deeppink;
+  color: white;
+  padding: 0.25em 0.75em;
+  cursor: pointer;
+  margin: 0.25em;
+  box-shadow: 4px 5px 0px #ad005d;
+  border-radius: 20px;
+}
+.clear:focus, .demo:focus {
+  outline: none;
+}
+
+.button-container {
+  position: absolute;
+  right: 10px;
+}
+
+#drive-value,
+#dry-wet-value {
+  font-style: italic;
+}
+</style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body translate="no">
+<div class='app'>
+<div class="button-container">
+<button class="demo">Demo</button>
+<button class="clear">Clear</button>
+</div>
+<h1 class="title">Step Sequencer</h1>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<div class='container'>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+<div class="checkbox"></div>
+</div>
+<input type="range" id='sliderRange' class="my-slider" min="70" max="200" value="152">
+<p class='bpm-value'>BPM: <span id="demo"></span></p>
+<div class="distortion-wrapper">
+<div class="header">
+<button class="distortion-button"></button>
+<p class="distortion-title">Distortion</p>
+</div>
+<div class="filter">
+<div class="slider-wrapper">
+<h4 class="slider-title">Drive</h4>
+<input type="range" id='driverKnob' class="my-slider" min="0" max="100" value="0">
+<p class='dist-value-title'>Drive: <span id="drive-value"></span></p>
+<h4 class="slider-title">Dry / Wet</h4>
+<input type="range" id='dryWetKnob' class="my-slider" min="0" max="100" value="0">
+<p class='dist-value-title'>Dry/Wet: <span id="dry-wet-value"></span></p>
+</div>
+</div>
+</div>
+</div>
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tone/13.8.25/Tone.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js'></script>
+<script id="rendered-js">
+console.clear();
+let down = false;
+
+
+document.documentElement.addEventListener('mousedown', () => {
+  if (Tone.context.state !== 'running') Tone.context.resume();
+});
+
+
+
+
+const prefix = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/377560/';
+const KD = 'C2'; // Kick Drum
+const SD = 'D2'; // Snare Drum (Clap)
+const CH = 'E2'; // Closed Hat
+const OH = 'F2'; // Open Hat
+const CY = 'G2'; // Cymbal
+const CHA = 'A3'; // Chant
+const TO = 'B3'; // tom
+const BASS = 'C3';
+const kit = new Tone.Sampler({
+  [KD]: `${prefix}808-Kick_27.wav`,
+  [SD]: `${prefix}808-Snare_01.wav`,
+  [CH]: `${prefix}808-Hat_Closed_01.wav`,
+  [OH]: `${prefix}808-Hat_Open_01.wav`,
+  [CY]: `${prefix}crash.WAV`,
+  [CHA]: `${prefix}808-Chant_03.wav`,
+  [TO]: `${prefix}tom.WAV` },
+onLoadedSamples);
+kit.toMaster();
+console.log(kit);
+
+Tone.Transport.scheduleRepeat(repeat, '16n');
+let dist = new Tone.Distortion(0, '2x').toMaster();
+let comp = new Tone.Compressor({ ratio: 20, threshold: -24, release: 0.25 });
+// var reverb = new Tone.Freeverb().toMaster()
+
+
+
+
+function onLoadedSamples() {
+  // kit is ready.
+  Tone.Transport.bpm.value = 152;
+  Tone.Transport.start();
+
+}
+
+window.addEventListener('mousedown', function () {down = true;});
+window.addEventListener('mouseup', function () {down = false;});
+
+const sounds = [TO, CHA, CY, OH, CH, SD, KD];
+const $rows = document.querySelectorAll('.container');
+
+const $checkboxes = document.body.querySelectorAll('.checkbox');
+_.map($checkboxes, $checkbox => {
+  $checkbox.addEventListener('mousedown', function () {
+    $checkbox.classList.toggle('active');
+    toggleAnimation($checkbox);
+  });
+  $checkbox.addEventListener('mouseover', function (e) {
+    if (down) {
+      $checkbox.classList.toggle('active');
+      toggleAnimation($checkbox);
+    }
+
+  });
+});
+
+async function toggleAnimation(el) {
+  el.classList.toggle('animate');
+  await waitForAnimation(el);
+  el.classList.toggle('animate');
+}
+
+function waitForAnimation(el) {
+  return new Promise(res => {
+    const endAnimation = () => {
+      el.removeEventListener('animationend', endAnimation);
+      res();
+    };
+    el.addEventListener('animationend', endAnimation);
+  });
+}
+
+let index = 0;
+let distortionOn = true;
+function highlightRow() {
+  let step = index % 16;
+  _.map($rows, row => {
+    row.children[step].classList.add('highlighted');
+    setTimeout(function () {row.children[step].classList.remove('highlighted');}, 166);
+  });
+}
+
+function repeat(time) {
+  let step = index % 16;
+  for (let i = 0; i < $rows.length; i++) {if (window.CP.shouldStopExecution(0)) break;
+    highlightRow(i);
+    let sound = sounds[i],
+    $row = $rows[i],
+    $input = $row.querySelector(`.checkbox:nth-child(${step + 1})`);
+    if ($input.classList.contains('active')) kit.triggerAttack(sound, time);
+  }window.CP.exitedLoop(0);
+  index++;
+}
+
+function setBpm(value) {
+  Tone.Transport.bpm.value = value;
+}
+
+function setFilterValue(value) {
+  dist.distortion = value / 100;
+}
+
+function setDryWetValue(value) {
+  dist.wet.value = value / 100;
+}
+
+const rangeslider = document.getElementById("sliderRange");
+const output = document.getElementById("demo");
+const distortionButton = document.querySelector(".distortion-button");
+const stepSequencer = document.querySelector('.title');
+
+output.innerHTML = rangeslider.value;
+
+rangeslider.oninput = function () {
+  output.innerHTML = this.value;
+  setBpm(this.value);
+};
+
+
+
+const driverKnob = document.getElementById("driverKnob");
+const dryWetKnob = document.getElementById("dryWetKnob");
+const distDriveSlider = document.getElementById("sliderWrap0");
+const driveValueNode = document.getElementById("drive-value");
+const distDryWetSlider = document.getElementById("sliderWrap1");
+const dryWetValueNode = document.getElementById("dry-wet-value");
+
+driveValueNode.innerHTML = driverKnob.value || 0;
+dryWetValueNode.innerHTML = dryWetKnob.value || 0;
+
+driverKnob.oninput = function () {
+  const { value } = this;
+  driveValueNode.innerHTML = Math.round(value);
+  setFilterValue(value);
+};
+
+dryWetKnob.oninput = function () {
+  const { value } = this;
+  dryWetValueNode.innerHTML = Math.round(value);
+  setDryWetValue(value);
+};
+
+function attachDistortionAndCompression() {
+  distortionButton.classList.add('active');
+  kit.connect(dist);
+  kit.connect(comp);
+}
+
+function detachDistortionAndCompression() {
+  distortionButton.classList.remove('active');
+  kit.disconnect(dist);
+  kit.disconnect(comp);
+}
+
+function handleDistortionClick() {
+  distortionOn = !distortionOn;
+  if (distortionOn) {
+    attachDistortionAndCompression();
+  } else {
+    detachDistortionAndCompression();
+  }
+}
+
+function addBeat() {
+  clearBeat();
+  Array.from($rows[4].children).forEach((step, i) => {
+
+    if (i === 5 || i === 12) {
+      return;
+    }
+    step.classList.add('active');
+  });
+  Array.from($rows[6].children).forEach((step, i) => {
+    if (i === 0 || i === 8) {
+      step.classList.add('active');
+    }
+  });
+  Array.from($rows[5].children).forEach((step, i) => {
+    if (i === 8) {
+      step.classList.add('active');
+    }
+  });
+  Array.from($rows[2].children).forEach((step, i) => {
+    if (i === 0) {
+      step.classList.add('active');
+    }
+  });
+  Array.from($rows[0].children).forEach((step, i) => {
+    if (i > 12) {
+      step.classList.add('active');
+    }
+  });
+}
+
+
+function clearBeat() {
+  Array.from($rows).forEach(row => {
+    Array.from(row.children).forEach(step => {
+      step.classList.remove('active');
+    });
+  });
+}
+
+const demo = document.querySelector('.demo');
+const clear = document.querySelector('.clear');
+
+demo.addEventListener('click', () => addBeat());
+clear.addEventListener('click', () => clearBeat());
+attachDistortionAndCompression();
+
+distortionButton.addEventListener('click', handleDistortionClick);
+//# sourceURL=pen.js
+    </script>
+</body>
+</html>
