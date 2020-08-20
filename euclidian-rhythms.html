@@ -1,0 +1,341 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+<title>CodePen - Euclidean Rhythms</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/10.1.0/nouislider.min.css'>
+<style>
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:500);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,800);
+
+* {
+  font-family: "Raleway"; /* Ubuntu */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #536976;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #292E49, #536976);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #292E49, #536976); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+.patterns {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.space {
+  flex: 0.33;
+}
+.pattern {
+  flex: 1;
+  padding: 0 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+}
+.vis {
+  width: 100%;
+  min-height: 300px;
+}
+.center {
+  fill: white;
+  stroke: none;
+}
+.hand {
+  stroke: white;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.event {
+  fill: rgba(150, 150, 150, 0.5);
+}
+.event.active {
+  fill: #EC407A;
+}
+
+
+.range {
+  margin: 0 30px;
+}
+.noUi-target {
+  border-width: 0;
+}
+.noUi-horizontal {
+  height: 15px;
+}
+.noUi-handle {
+  outline: none;
+  box-shadow: none;
+}
+.noUi-connect {
+  background-color: #EC407A;
+  box-shadow: none;
+}
+.noUi-horizontal .noUi-tooltip {
+  top: 110%;
+  bottom: -30px;
+  font-size: 18px;
+  border-width: 0;
+  background: none;
+  color: white;
+}
+
+footer {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 20px;
+  text-align: center;
+  color: white;
+}
+footer a {
+  color: white;
+}
+
+@media (max-width: 1023px) {
+  .patterns {
+    flex-direction: column;
+  }
+  .vis {
+    min-height: auto;
+  }
+  .space {
+    flex: 0;
+  }
+}
+</style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body translate="no">
+<div class="patterns">
+<div class="space"></div>
+<div class="pattern">
+<svg class="vis"></svg>
+<div class="range"></div>
+</div>
+<div class="pattern">
+<svg class="vis"></svg>
+<div class="range"></div>
+</div>
+<div class="pattern">
+<svg class="vis"></svg>
+<div class="range"></div>
+</div>
+<div class="pattern">
+<svg class="vis"></svg>
+<div class="range"></div>
+</div>
+<div class="space"></div>
+</div>
+<footer>
+<a href="http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf" target="_blank">
+Read more about Euclidean rhythms
+</a> / See the <a href="https://codepen.io/shaunlebron/full/rYGmRv/">Bresenham Rhythms</a> variation by Shaun Lebron
+</footer>
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/10.1.0/nouislider.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/dynamics.js/1.1.5/dynamics.js'></script>
+<script src='https://cdn.rawgit.com/tambien/StartAudioContext/8da8637e/StartAudioContext.js'></script>
+<script id="rendered-js">
+function bjorklund(k, n) {
+  let seq = _.times(k, _.constant([1])).concat(_.times(n - k, _.constant([0])));
+  while (true) {
+    let [head, remainder] = _.partition(seq, i => _.isEqual(i, seq[0]));
+    if (remainder.length < 2) break;
+    for (let i = 0; i < Math.min(head.length, remainder.length); i++) {
+      seq[i] = seq[i].concat(seq.pop());
+    }
+  }
+  return _.flatten(seq);
+}
+
+function buildPattern(k, n, visEl, centerX, centerY, radius) {
+  let evts = bjorklund(k, n);
+  let pattern = evts.map((evt, i) => {
+    let angle = i / n * Math.PI * 2;
+
+    let width = evt ? radius / 3 : radius / 5;
+    let height = evt ? radius / 7 : radius / 10;
+    let x = centerX + Math.cos(angle) * radius;
+    let y = centerY + Math.sin(angle) * radius;
+
+    let group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    group.setAttribute(
+    'style',
+    `transform-origin: ${x}px ${y}px; transform: rotate(${angle}rad)`);
+
+    visEl.appendChild(group);
+
+    let node = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    node.setAttribute('x', x - width / 2);
+    node.setAttribute('y', y - height / 2);
+    node.setAttribute('rx', 5);
+    node.setAttribute('ry', 5);
+    node.setAttribute('width', width);
+    node.setAttribute('height', height);
+    node.setAttribute('class', `event ${evt ? 'active' : ''}`);
+    group.appendChild(node);
+
+    return { evt, angle, node, group };
+  });
+  return pattern;
+}
+
+function startPattern(k, n, players, containerEl) {
+  let visEl = containerEl.querySelector('.vis');
+  let width = visEl.getBoundingClientRect().width;
+  let height = visEl.getBoundingClientRect().height;
+  let size = Math.min(width, height);
+  let centerX = width / 2;
+  let centerY = height / 2;
+  let radius = size / 4;
+
+  let handEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  handEl.setAttribute('x1', centerX);
+  handEl.setAttribute('y1', centerY);
+  handEl.setAttribute('x2', centerX + radius + 10);
+  handEl.setAttribute('y2', centerY);
+  handEl.setAttribute('class', 'hand');
+  visEl.appendChild(handEl);
+
+  let centerEl = document.createElementNS(
+  'http://www.w3.org/2000/svg',
+  'circle');
+
+  centerEl.setAttribute('cx', centerX);
+  centerEl.setAttribute('cy', centerY);
+  centerEl.setAttribute('r', 3);
+  centerEl.setAttribute('class', 'center');
+  visEl.appendChild(centerEl);
+
+  let pattern = buildPattern(k, n, visEl, centerX, centerY, radius);
+
+  let seq = new Tone.Sequence(
+  (time, { evt, angle, node }) => {
+    if (evt === 1) {
+      let sample = _.sample(['1', '2', '3', '4']);
+      players.get(sample).start(time);
+    }
+    if (evt) {
+      Tone.Draw.schedule(() => {
+        node.setAttribute('transform', `translate(0, 15)`);
+        dynamics.animate(
+        node,
+        { translateX: 0, translateY: 0 },
+        { type: dynamics.spring, frequency: 400 });
+
+      }, time);
+    }
+  },
+  pattern,
+  '16n');
+
+  seq.humanize = 0.01;
+  seq.start();
+
+  let rangeEl = containerEl.querySelector('.range');
+  noUiSlider.create(rangeEl, {
+    range: { min: 0, max: 16 },
+    start: [k, n],
+    margin: 0,
+    connect: true,
+    behaviour: 'tap-drag',
+    tooltips: true,
+    step: 1,
+    format: {
+      to: v => Math.round(v),
+      from: v => Math.round(v) } });
+
+
+  rangeEl.noUiSlider.on('update', ([k, n]) => {
+    seq.removeAll();
+    pattern.forEach(({ group }) => group.remove());
+    pattern = buildPattern(k, n, visEl, centerX, centerY, radius);
+    pattern.forEach((v, i) => seq.add(i, v));
+    seq.loopEnd = `${pattern.length} * 16n`;
+  });
+
+  return { centerX, centerY, seq, handEl };
+}
+
+let e3Players = new Tone.Players({
+  '1': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-e3-2.mp3',
+  '2': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-e3-2.mp3',
+  '3': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-e3-3.mp3',
+  '4': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-e3-4.mp3' }).
+connect(new Tone.Panner(-0.6).connect(new Tone.Gain(0.5).toMaster()));
+let fs4Players = new Tone.Players({
+  '1': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-fs3-1.mp3',
+  '2': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-fs3-2.mp3',
+  '3': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-fs3-3.mp3',
+  '4': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-fs3-4.mp3' }).
+connect(new Tone.Panner(-0.2).connect(new Tone.Gain(0.5).toMaster()));
+let a3Players = new Tone.Players({
+  '1': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-a3-1.mp3',
+  '2': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-a3-2.mp3',
+  '3': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-a3-3.mp3',
+  '4': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-a3-4.mp3' }).
+connect(new Tone.Panner(0.2).connect(new Tone.Gain(0.5).toMaster()));
+let cs4Players = new Tone.Players({
+  '1': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-cs4-1.mp3',
+  '2': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-cs4-2.mp3',
+  '3': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-cs4-3.mp3',
+  '4': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/eucl-cs4-4.mp3' }).
+connect(new Tone.Panner(0.6).connect(new Tone.Gain(0.5).toMaster()));
+
+Tone.Buffer.on('load', () => {
+  const patternElements = Array.from(document.querySelectorAll('.pattern'));
+  let e3Pattern = startPattern(3, 7, e3Players, patternElements[0]);
+  let fs4Pattern = startPattern(1, 8, fs4Players, patternElements[1]);
+  let a3Pattern = startPattern(4, 10, a3Players, patternElements[2]);
+  let cs4Pattern = startPattern(2, 5, cs4Players, patternElements[3]);
+  Tone.Transport.start();
+
+  function updateHand({ handEl, centerX, centerY, seq }) {
+    handEl.setAttribute(
+    'transform',
+    `translate(${centerX} ${centerY}) rotate(${seq.progress *
+    360}) translate(${-centerX} ${-centerY})`);
+
+  }
+
+  function animateHands() {
+    updateHand(e3Pattern);
+    updateHand(fs4Pattern);
+    updateHand(a3Pattern);
+    updateHand(cs4Pattern);
+    requestAnimationFrame(animateHands);
+  }
+  requestAnimationFrame(animateHands);
+});
+
+StartAudioContext(Tone.context, document.documentElement);
+//# sourceURL=pen.js
+    </script>
+</body>
+</html>

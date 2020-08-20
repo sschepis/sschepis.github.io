@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+
+  <meta charset="UTF-8">
+
+
+  <title>Diatonic Dreams</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  
+<style>
+html, body, #app, .container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+.loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+}
+
+
+/* Backgrounds from https://uigradients.com */
+
+.container.scale-9 {
+  background: #085078;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #85D8CE, #085078);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #85D8CE, #085078); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+.container.scale-4 {
+  background: #FC466B;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #3F5EFB, #FC466B);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #3F5EFB, #FC466B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-11 {
+  background: #c94b4b;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4b134f, #c94b4b);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4b134f, #c94b4b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-6 {
+  background: #0f0c29;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-1 {
+  background: #00b09b;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-8 {
+  background: #36D1DC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #5B86E5, #36D1DC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */   
+}
+.container.scale-3 {
+  background: #3C3B3F;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #605C3C, #3C3B3F);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #605C3C, #3C3B3F); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-10 {
+  background: #000000;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0f9b0f, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0f9b0f, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+.container.scale-5 {
+  background: # ;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ffc0cb, #800080);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ffc0cb, #800080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.container.scale-0 {
+  background: #00F260;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+.container.scale-7 {
+  background: #CB356B;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #BD3F32, #CB356B);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #BD3F32, #CB356B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */  
+}
+.container.scale-2 {
+  background: #03001e;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #fdeff9, #ec38bc, #7303c0, #03001e);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #fdeff9, #ec38bc, #7303c0, #03001e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.visualizations {
+  width: 100%;
+  height: calc(100% - 120px);
+  position: relative;
+}
+.visualization {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.controls {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: sans-serif;
+  background-color: rgba(0, 0, 0, 0.25);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.control {
+  padding: 10px 20px;
+  color: white;
+  text-align: center;
+}
+.control.flush-right {
+  margin-left: auto;
+}
+.control-label {
+  padding: 5px;
+  min-height: 23px;
+  line-height: 23px;
+}
+@media only screen and (max-width: 600px)  {
+  .control-label {
+    font-size: 9px;
+    min-height: 15px;
+    line-height: 15px;
+  }
+}
+
+
+.key {
+  opacity: 0.075;
+}
+.key.active {
+  opacity: 0.7;
+}
+
+
+.note {
+  fill: black;
+  font-size: 10px;
+  pointer-events: none;
+  opacity: 0.1;
+}
+.note.active {
+  opacity: 0.7;
+}
+.note.accidental {
+  fill: white;
+}
+
+.triad {
+  fill: white;
+}
+.triad-chord {
+  pointer-events: none;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.loop, .loop-triad-touch-point {
+  stroke-width: 2;
+}
+.loop-triad-touch-point.current {
+  stroke-width: 4;
+}
+.loop.building {
+  stroke: rgba(255, 255, 255, 0.9);
+  fill: none;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+  <script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+
+
+</head>
+
+<body translate="no" >
+  <div id="app"></div>
+    <script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+
+  <script src='https://cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/tone@0.12.24/build/Tone.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/inferno@3.10.1/dist/inferno.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/inferno-hyperscript@3.10.1/dist/inferno-hyperscript.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/inferno-component@3.10.1/dist/inferno-component.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/nexusui@2.0.2/dist/NexusUI.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/gsap@1.20.3/TweenMax.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/gsap@1.20.3/TimelineLite.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/startaudiocontext@1.2.1/StartAudioContext.min.js'></script>
+  
+      <script id="rendered-js" >
+const COL_INTERLEAVING = 0.85;
+const ROWS = window.innerHeight > 500 ? 8 : 6;
+const COLS = calculateAppropriateColCount(
+window.innerWidth,
+window.innerHeight);
+
+const MINOR_THIRD = 3;
+const MAJOR_THIRD = 4;
+const MODES = [
+{ name: "Ionian", intervals: [2, 2, 1, 2, 2, 2, 1] },
+{ name: "Dorian", intervals: [2, 1, 2, 2, 2, 1, 2] },
+{ name: "Phrygian", intervals: [1, 2, 2, 2, 1, 2, 2] },
+{ name: "Lydian", intervals: [2, 2, 2, 1, 2, 2, 1] },
+{ name: "Mixolydian", intervals: [2, 2, 1, 2, 2, 1, 2] },
+{ name: "Aeolian", intervals: [2, 1, 2, 2, 1, 2, 2] },
+{ name: "Locrian", intervals: [1, 2, 2, 1, 2, 2, 2] }];
+
+const PERFECT_FIFTH = 7;
+const START_NOTE = Tone.Frequency("C#3").toMidi();
+const TICK_DURATION = "8n";
+const TICKS_PER_INTERACTION = 4;
+const PATTERN_TICK_LENGTH = 16;
+const PATTERN_DEVELOPMENT_RATE = 0.1;
+
+let loading = true;
+let tick = 0;
+let interactionTick = 0;
+let controls = {
+  keySig: 3,
+  mode: 0,
+  voices: 4,
+  density: 0.4 };
+
+let scale = buildScale();
+let keyboard = updateKeyCoordinates(
+buildKeyboard(),
+window.innerWidth,
+window.innerHeight);
+
+let triads = buildTriads();
+let loops = [];
+let cursorPosition = { isDown: false, triad: null };
+let loopTicker = null,
+loopTickerStartTime = null;
+
+Nexus.colors.fill = "rgba(255, 255, 255, 0.9)";
+
+function buildKeyboard() {
+  let keyboard = [];
+  for (let colNum = 0; colNum < COLS; colNum++) {if (window.CP.shouldStopExecution(0)) break;
+    let down = Math.ceil(colNum / 2);
+    let up = Math.floor(colNum / 2);
+    let startNote = START_NOTE + -1 * MINOR_THIRD * down + MAJOR_THIRD * up;
+    let col = [];
+    let startRow = colNum % 2 === 0 ? 1 : 0;
+    for (let rowNum = startRow; rowNum < ROWS * 2; rowNum += 2) {if (window.CP.shouldStopExecution(1)) break;
+      let note = startNote + PERFECT_FIFTH * (rowNum - startRow) / 2;
+      col[rowNum] = { note, colNum, rowNum };
+    }window.CP.exitedLoop(1);
+    keyboard.push(col);
+  }window.CP.exitedLoop(0);
+  return keyboard;
+}
+
+function calculateAppropriateColCount(width, height) {
+  let availableHeight = height - 120;
+  let availableHeightPerRow = availableHeight / (ROWS + 0.5);
+  return Math.min(
+  35,
+  Math.floor(width / COL_INTERLEAVING / availableHeightPerRow) - 1);
+
+}
+
+function updateKeyCoordinates(keyboard, width, height) {
+  let availableHeight = height - 120;
+  let maxKeyWidth = width / keyboard.length / COL_INTERLEAVING;
+  let maxKeyHeight = availableHeight / (ROWS + 0.5);
+  let keySize = Math.min(maxKeyWidth, maxKeyHeight);
+  let marginLeft = (width - keySize * keyboard.length * COL_INTERLEAVING) / 2;
+  let marginTop = (availableHeight - keySize * (ROWS + 0.5)) / 2;
+  let polyAngle = 2 * Math.PI / 6;
+  return keyboard.map((col, colNum) =>
+  col.map((key, rowNum) => {
+    if (key) {
+      let x = marginLeft + keySize * colNum * COL_INTERLEAVING;
+      let y = availableHeight - keySize / 2 * (rowNum + 2) - marginTop;
+      let r = keySize / 2 + 3;
+      let polyPoints = _.times(6, i => {
+        let px = x + r + r * Math.cos(polyAngle * i);
+        let py = y + r + r * Math.sin(polyAngle * i);
+        return [px, py];
+      });
+      return { ...key, pos: { x, y, r }, polyPoints };
+    }
+  }));
+
+}
+
+function buildTriads() {
+  let triads = [];
+  for (let colNum = 0; colNum < keyboard.length; colNum++) {if (window.CP.shouldStopExecution(2)) break;
+    let col = keyboard[colNum];
+    for (let rowNum = 0; rowNum < ROWS * 2; rowNum++) {if (window.CP.shouldStopExecution(3)) break;
+      let key = col[rowNum];
+      if (!key || !isActive(key.note)) continue;
+      let firstInterval = isActive(key.note + MAJOR_THIRD) ?
+      MAJOR_THIRD :
+      MINOR_THIRD;
+      let secondInterval = isActive(key.note + firstInterval + MAJOR_THIRD) ?
+      MAJOR_THIRD :
+      MINOR_THIRD;
+      let firstThird;
+      if (firstInterval === MAJOR_THIRD && colNum < keyboard.length - 1) {
+        firstThird = keyboard[colNum + 1][rowNum + 1];
+      } else if (firstInterval === MINOR_THIRD && colNum > 0) {
+        firstThird = keyboard[colNum - 1][rowNum + 1];
+      }
+      let secondThird;
+      if (firstInterval + secondInterval === PERFECT_FIFTH) {
+        secondThird = keyboard[colNum][rowNum + 2];
+      } else if (colNum > 1) {
+        secondThird = keyboard[colNum - 2][rowNum + 2];
+      }
+      if (firstThird && secondThird) {
+        let triad = makeTriad([key, firstThird, secondThird]);
+        triads.push(triad);
+      }
+    }window.CP.exitedLoop(3);
+  }window.CP.exitedLoop(2);
+  return triads;
+}
+
+function makeTriad(keys) {
+  let id = _.uniqueId("triad");
+  let r = keys[0].pos.r / 2.1;
+  let xSum = 0,
+  ySum = 0;
+  for (let key of keys) {
+    xSum += key.pos.x + key.pos.r;
+    ySum += key.pos.y + key.pos.r;
+  }
+  let centerX = xSum / keys.length;
+  let centerY = ySum / keys.length;
+  let pos = { x: centerX, y: centerY, r };
+  let chordNumber = getChordNumber(keys[0]);
+  return { id, keys, pos, chordNumber };
+}
+
+function isActive(note) {
+  let pc = note % 12;
+  return scale.some(v => v === pc);
+}
+
+function buildScale() {
+  return MODES[controls.mode].intervals.reduce(
+  (pcs, interval) => (pcs.push((pcs[pcs.length - 1] + interval) % 12), pcs),
+  [controls.keySig * 7 % 12]);
+
+}
+
+function migrateLoopsToCurrentTriads() {
+  let occupiedTriadIds = new Set();
+  loops = loops.map(loop => ({
+    ...loop,
+    triads: loop.triads.map(loopTriad => {
+      let triad = findClosestMatchingTriad(
+      loopTriad.origTriad || loopTriad.triad,
+      occupiedTriadIds);
+
+      occupiedTriadIds.add(triad.id);
+      return {
+        ...loopTriad,
+        origTriad: loopTriad.origTriad || loopTriad.triad,
+        triad };
+
+    }) }));
+
+}
+
+function addNewVoice() {
+  let occupiedTriadIds = new Set(
+  _.flatMap(loops, l => l.triads.map(t => t.triad.id)));
+
+  let seed = _.last(loops);
+  let newLoop = {
+    ...seed,
+    triads: seed.triads.map(_.clone),
+    closed: true,
+    harmonizing: true };
+
+  for (let loopTriad of newLoop.triads) {
+    loopTriad.triad = findRandomMatchingTriad(
+    loopTriad.triad,
+    occupiedTriadIds);
+
+    loopTriad.origTriad = loopTriad.triad;
+    occupiedTriadIds.add(loopTriad.triad.id);
+  }
+  loops = [...loops, newLoop];
+}
+
+function findClosestMatchingTriad(triad, occupiedTriadIds) {
+  let matchingTriads = triads.filter(
+  t => !occupiedTriadIds.has(t.id) && t.chordNumber === triad.chordNumber);
+
+  let minNew,
+  minNoteDist = Number.MAX_VALUE;
+  for (let newTriad of matchingTriads) {
+    let noteDist = Math.abs(newTriad.keys[0].note - triad.keys[0].note);
+    if (noteDist <= minNoteDist) {
+      minNoteDist = noteDist;
+      if (minNew) {
+        let visualDist = getEuclideanDistance(newTriad.pos, triad.pos);
+        let minVisualDist = getEuclideanDistance(minNew.pos, triad.pos);
+        if (visualDist < minVisualDist) {
+          minNew = newTriad;
+        }
+      } else {
+        minNew = newTriad;
+      }
+    }
+  }
+  return minNew;
+}
+
+function getEuclideanDistance(p1, p2) {
+  return Math.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2);
+}
+
+function findRandomMatchingTriad(triad, occupiedTriadIds) {
+  let matching = _.filter(
+  triads,
+  t => !occupiedTriadIds.has(t.id) && t.chordNumber === triad.chordNumber);
+
+  return pickRandomTriad(matching, occupiedTriadIds);
+}
+
+function findRandomMatchingTriadWithRoot(triad, root, occupiedTriadIds) {
+  let matching = triads.filter(
+  (t) =>
+  !occupiedTriadIds.has(t.id) &&
+  t.chordNumber === triad.chordNumber &&
+  t.keys[0].note === root);
+
+  return pickRandomTriad(matching, occupiedTriadIds);
+}
+
+function pickRandomTriad(triads) {
+  if (triads.length === 0) return null;
+  return triads[Math.floor(Math.random() * triads.length)];
+}
+
+function updateCursorPosition(update) {
+  cursorPosition = {
+    ...cursorPosition,
+    ...update };
+
+}
+
+function openNewLoops(voices) {
+  return _.times(voices, voice => ({
+    currentTick: -1,
+    triads: [],
+    pattern: generateLoopPattern(),
+    closed: false,
+    harmonizing: voice > 0 }));
+
+}
+
+function getOpenLoops(loops) {
+  return loops.filter(loop => !loop.closed);
+}
+
+function getClosedLoops(loops) {
+  return loops.filter(loop => loop.closed);
+}
+
+function getPrimaryOpenLoop(loops) {
+  return _.find(getOpenLoops(loops), { harmonizing: false });
+}
+
+function getHarmonizingOpenLoops(loops) {
+  return _.filter(getOpenLoops(loops), { harmonizing: true });
+}
+
+function loopTick(time) {
+  let onTime =
+  time - Tone.now() >= 0 || Tone.Transport.seconds === loopTickerStartTime;
+  loops = tickLoops(loops);
+  if (tick % TICKS_PER_INTERACTION === 0) {
+    loops = closeAndPruneLoops(loops);
+    loops = buildLoopTriadsInOpenLoops(loops);
+    loops = updateTriadPlayTimes(loops);
+    loops = updateLoopPatterns(loops);
+    interactionTick++;
+  }
+  if (onTime) {
+    loops = playLoops(time);
+    Tone.Draw.schedule(render, time);
+  }
+  tick++;
+  if (loops.length === 0) {
+    Tone.Transport.clear(loopTicker);
+    loopTicker = null;
+  }
+}
+
+function tickLoops(loops) {
+  return loops.map(loop => ({
+    ...loop,
+    currentTick: loop.currentTick + 1 }));
+
+}
+
+function closeAndPruneLoops(loops, time) {
+  if (!cursorPosition.isDown) {
+    return loops.
+    filter(
+    loop => !loop.closed && loop.currentTick < 1 || loop.triads.length > 1).
+
+    map(loop => loop.closed ? loop : closeLoop(loop, time));
+  } else {
+    return loops;
+  }
+}
+
+function closeLoop(loop, time) {
+  return {
+    ...loop,
+    closed: true,
+    endedAt: loop.currentTick,
+    currentTick: 0,
+    triads: loop.triads.map(loopTriad => ({
+      ...loopTriad,
+      endedAt: loopTriad.endedAt || loop.currentTick })) };
+
+
+}
+
+function buildLoopTriadsInOpenLoops(loops) {
+  if (cursorPosition.isDown && getOpenLoops(loops).length > 0) {
+    let primary = getPrimaryOpenLoop(loops);
+    let newTriadForPrimary = findNewTriadFromCursorPosition(primary);
+    if (newTriadForPrimary) {
+      let harmonizing = getHarmonizingOpenLoops(loops);
+      let closed = getClosedLoops(loops);
+
+      let newPrimary = addNextTriadToLoop(primary, newTriadForPrimary);
+      let rootDelta = getLastRootDelta(newPrimary);
+
+      let occupiedTriadIds = new Set([newTriadForPrimary.id]);
+      let newHarmonizing = harmonizing.map((loop, idx) => {
+        let matchingTriad;
+        if (rootDelta) {
+          let nextRoot = getNextRoot(loop, rootDelta, idx);
+          matchingTriad = findRandomMatchingTriadWithRoot(
+          newTriadForPrimary,
+          nextRoot,
+          occupiedTriadIds);
+
+        }
+        if (!matchingTriad) {
+          matchingTriad = findRandomMatchingTriad(
+          newTriadForPrimary,
+          occupiedTriadIds);
+
+        }
+        occupiedTriadIds.add(matchingTriad.id);
+        return addNextTriadToLoop(loop, matchingTriad);
+      });
+
+      return [...closed, newPrimary, ...newHarmonizing];
+    }
+  }
+  return loops;
+}
+
+function findNewTriadFromCursorPosition(loop) {
+  let newTriad = cursorPosition.triad;
+  if (
+  newTriad && (
+  loop.triads.length === 0 || newTriad !== _.last(loop.triads).triad))
+  {
+    return newTriad;
+  } else {
+    return null;
+  }
+}
+
+function addNextTriadToLoop(loop, newTriad) {
+  return {
+    ...loop,
+    triads: loop.triads.
+    map(loopTriad => ({
+      ...loopTriad,
+      endedAt: Math.max(0, loopTriad.endedAt || loop.currentTick) })).
+
+    concat([
+    {
+      triad: newTriad,
+      startedAt: Math.max(0, loop.currentTick) }]) };
+
+
+
+}
+
+function getLastRootDelta(loop) {
+  if (loop.triads.length > 1) {
+    let last = loop.triads[loop.triads.length - 1];
+    let secondToLast = loop.triads[loop.triads.length - 2];
+    return last.triad.keys[0].note - secondToLast.triad.keys[0].note;
+  }
+  return null;
+}
+
+function getNextRoot(loop, rootDelta, harmonyIndex) {
+  let last = loop.triads[loop.triads.length - 1];
+  if (harmonyIndex % 2 === 0) {
+    // If original went up, go down, and vice versa.
+    // First follow original, then go up/down by an octave.
+    let octaveShift = rootDelta > 0 ? -12 : 12;
+    return last.triad.keys[0].note + rootDelta + octaveShift;
+  } else {
+    // Just follow originah progression.
+    return last.triad.keys[0].note + rootDelta;
+  }
+}
+
+function updateTriadPlayTimes(loops) {
+  return loops.map(loop => ({
+    ...loop,
+    triads: loop.triads.map(loopTriad => {
+      let start = loopTriad.startedAt;
+      let end = loop.endedAt ?
+      loopTriad.endedAt % loop.endedAt :
+      loopTriad.endedAt;
+      let loopedTick = loop.endedAt ?
+      loop.currentTick % loop.endedAt :
+      loop.currentTick;
+      return {
+        ...loopTriad,
+        isCurrent: loopedTick >= start && (!end || loopedTick < end) };
+
+    }) }));
+
+}
+
+function updateLoopPatterns(loops) {
+  return loops.map(loop => ({
+    ...loop,
+    pattern: loop.pattern.map(patternStep => {
+      let newNote =
+      patternStep.note && Math.random() > PATTERN_DEVELOPMENT_RATE ?
+      patternStep.note :
+      {
+        note: pickNote(patternStep),
+        velocity: pickVelocity(patternStep) };
+
+      return { ...patternStep, note: newNote };
+    }) }));
+
+}
+
+function pickNote(patternStep) {
+  return Math.random() < controls.density * patternStep.noteProb ?
+  Math.floor(Math.random() * 3) :
+  null;
+}
+
+function pickVelocity(patternStep) {
+  if (patternStep.beat === 0) {
+    // upbeat
+    return Math.random() < 0.75 ? 0.7 : 0.4;
+  } else {
+    // downbeat (occasional syncopation)
+    return Math.random() < 0.25 ? 0.7 : 0.4;
+  }
+}
+
+function playLoops(time) {
+  return loops.map((loop, idx) => {
+    let downKey = getCurrentDownKey(loop);
+    if (downKey) {
+      playNote(downKey.key, time, downKey.velocity, idx);
+    }
+    return { ...loop, downKey };
+  });
+}
+
+function getCurrentDownKey(loop) {
+  let loopBeat = loop.currentTick % PATTERN_TICK_LENGTH;
+  for (let loopTriad of loop.triads) {
+    if (loopTriad.isCurrent) {
+      for (let { beat, note } of loop.pattern) {
+        if (note.note !== null && beat === loopBeat) {
+          return {
+            key: loopTriad.triad.keys[note.note],
+            velocity: note.velocity };
+
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function playNote(key, time, velocity, loopIdx) {
+  let pan = -0.5 + (key.colNum + 0.5) / keyboard.length;
+  playOutput(key.note, time, velocity, pan, loopIdx);
+}
+
+function generateLoopPattern() {
+  return _.range(0, PATTERN_TICK_LENGTH).map(beat => {
+    let fracBeat = beat % 4;
+    let noteProb = fracBeat === 0 ? 2.0 : 1.0;
+    return {
+      beat,
+      noteProb };
+
+  });
+}
+
+function getTriadNumeral([one, two, three]) {
+  let chordNumber = getChordNumber(one);
+  let numeral = toRoman(chordNumber + 1);
+  if (two.note - one.note < MAJOR_THIRD) {
+    numeral = numeral.toLowerCase();
+  }
+  if (three.note - one.note < PERFECT_FIFTH) {
+    numeral += "\u00B0";
+  }
+  return numeral;
+}
+
+function getChordNumber(key) {
+  return scale.indexOf(key.note % 12);
+}
+
+function toRoman(n) {
+  switch (n) {
+    case 1:
+      return "I";
+    case 2:
+      return "II";
+    case 3:
+      return "III";
+    case 4:
+      return "IV";
+    case 5:
+      return "V";
+    case 6:
+      return "VI";
+    case 7:
+      return "VII";}
+
+}
+
+function fetchSample(url) {
+  return new Promise((succ, err) => new Tone.Buffer(url, succ, err));
+}
+
+let outputs = {
+  synth: {
+    supported: true,
+    sampleScale: _.range(
+    new Tone.Frequency("A#2").toMidi(),
+    new Tone.Frequency("C#8").toMidi() + 1,
+    3).
+    map((note, index) => ({ note, index })),
+    enable: function () {
+      this._masterGain = Tone.context.createGain();
+      this._masterGain.gain.value = 0;
+      this._masterGain.connect(Tone.context.destination);
+      return Promise.all([
+      fetchSample("https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/nebulae-scale-sparse-low-mono.mp3"),
+      fetchSample("https://s3-us-west-2.amazonaws.com/s.cdpn.io/969699/nebulae-scale-sparse-mono.mp3")]).
+
+      then(([lowBuf, buf]) => {
+        this._lowBuffer = lowBuf.get();
+        this._buffer = buf.get();
+      }).
+      catch(e => console.error(e));
+    },
+    disable: function () {
+      this._buffer = null;
+    },
+    play: function (note, time, velocity, pan, loopIdx) {
+      if (this._buffer) {
+        let noteDuration = this._buffer.duration / this.sampleScale.length;
+        let sample = _.minBy(this.sampleScale, (sample) =>
+        Math.abs(sample.note - note));
+
+        let noteOffset = sample.index * noteDuration;
+        let distanceToSample = note - sample.note;
+        let playbackRate = 2 ** (distanceToSample / 12);
+        let src = Tone.context.createBufferSource();
+        src.buffer = velocity < 0.5 ? this._lowBuffer : this._buffer;
+        //src.buffer = this._buffer;
+        src.playbackRate.value = playbackRate;
+        let panner = Tone.context.createStereoPanner();
+        panner.pan.value = pan;
+
+        src.connect(Tone.context.destination);
+        panner.connect(this._masterGain);
+
+        src.start(time, noteOffset, noteDuration - 0.1);
+
+        if (this._masterGain.gain.value === 0) {
+          this._masterGain.gain.setTargetAtTime(1.0, Tone.now(), 0.5);
+        }
+      }
+    } },
+
+  midi: {
+    supported: !!navigator.requestMIDIAccess,
+    enable: function () {
+      return navigator.requestMIDIAccess().then(midiAccess => {
+        this._output = midiAccess.outputs.entries().next().value[1];
+        this._startScheduler = Tone.Transport.scheduleRepeat(time => {
+          const firstTickAfter = time - Tone.now();
+          const firstTickAt = window.performance.now() + firstTickAfter * 1000;
+          this._output.send([0xfa], firstTickAt);
+        }, "1m");
+        this._tickScheduler = Tone.Transport.scheduleRepeat(time => {
+          const firstTickAfter = time - Tone.now();
+          const firstTickAt = window.performance.now() + firstTickAfter * 1000;
+          const sixteenthSeconds = new Tone.Time("16n").toSeconds();
+          const ticks = 24 / 4;
+          for (let i = 0; i < ticks; i++) {if (window.CP.shouldStopExecution(4)) break;
+            let t = firstTickAt + sixteenthSeconds / ticks * i * 1000;
+            this._output.send([0xf8], t);
+          }window.CP.exitedLoop(4);
+        }, "16n");
+      });
+    },
+    disable: function () {
+      Tone.Transport.clear(this._startScheduler);
+      Tone.Transport.clear(this._tickScheduler);
+    },
+    play: function (note, time, velocity, pan, channel = 0) {
+      if (!this._output) return;
+      const onAfter = new Tone.Time(time).toSeconds() - Tone.now();
+      const onAt = window.performance.now() + onAfter * 1000;
+      let noteOn = [145 + channel, note, velocity * 127];
+      let noteOff = [128 + channel, note, 0x00];
+      this._output.send(noteOn, onAt);
+      this._output.send(noteOff, onAt + new Tone.Time("4n").toSeconds() * 1000);
+    } } };
+
+
+
+function activateOutput(name) {
+  if (controls.output) {
+    outputs[controls.output].disable();
+  }
+  controls.output = name;
+  return outputs[name].enable();
+}
+function playOutput(...args) {
+  outputs[controls.output].play(...args);
+}
+
+const { h } = Inferno;
+Inferno.options.recyclingEnabled = true;
+
+function onMouseDown(evt) {
+  updateCursorPosition({ isDown: true });
+  loops = buildLoopTriadsInOpenLoops(openNewLoops(controls.voices));
+
+  if (!_.isNull(loopTicker)) {
+    Tone.Transport.clear(loopTicker);
+    let runtime = Tone.Transport.seconds - loopTickerStartTime;
+    let singleTickTime = new Tone.TransportTime(TICK_DURATION).toSeconds();
+    let fullTicks = Math.ceil(runtime / singleTickTime);
+    loopTickerStartTime =
+    Tone.Transport.seconds + fullTicks * singleTickTime - runtime;
+  } else {
+    loopTickerStartTime = Tone.Transport.seconds;
+  }
+  tick = 0;
+  interactionTick = 0;
+  loopTicker = Tone.Transport.scheduleRepeat(
+  loopTick,
+  TICK_DURATION,
+  loopTickerStartTime);
+
+  evt.preventDefault();
+}
+function onMouseUp(evt) {
+  updateCursorPosition({ isDown: false });
+  evt.preventDefault();
+}
+function onMouseOverTriad(evt) {
+  onEnterTriad(evt.currentTarget.id);
+}
+function onMouseOutOfTriad(evt) {
+  onLeaveTriad(evt.currentTarget.id);
+}
+function onTouchStart(evt) {
+  onMouseDown(evt);
+  let touch = evt.touches[0];
+  let el = document.elementFromPoint(touch.pageX, touch.pageY);
+  if (el.id && el.id.startsWith("triad")) {
+    onEnterTriad(el.id);
+  }
+}
+function onTouchMove(evt) {
+  let touch = evt.touches[0];
+  let el = document.elementFromPoint(touch.pageX, touch.pageY);
+  if (el.id && el.id.startsWith("triad")) {
+    onEnterTriad(el.id);
+  } else {
+    onLeaveTriad();
+  }
+  evt.preventDefault();
+}
+function onTouchEnd(evt) {
+  onMouseUp(evt);
+  onLeaveTriad();
+}
+function onEnterTriad(id) {
+  let triad = _.find(triads, { id });
+  updateCursorPosition({ triad });
+}
+function onLeaveTriad(id) {
+  let triad = _.find(triads, { id });
+  if (!id || cursorPosition.triad === triad) {
+    updateCursorPosition({ triad: null });
+  }
+}
+function onKeySigChange(value) {
+  controls.keySig = value;
+  scale = buildScale();
+  triads = buildTriads();
+  migrateLoopsToCurrentTriads();
+  render();
+}
+function onModeChange(value) {
+  controls.mode = value;
+  scale = buildScale();
+  triads = buildTriads();
+  migrateLoopsToCurrentTriads();
+  render();
+}
+function onVoicesChange(value) {
+  controls.voices = value;
+  if (controls.voices < loops.length) {
+    loops.length = controls.voices;
+  } else if (loops.length > 0) {
+    while (loops.length < controls.voices) {if (window.CP.shouldStopExecution(5)) break;
+      addNewVoice();
+    }window.CP.exitedLoop(5);
+  }
+  render();
+}
+function onDensityChange(value) {
+  controls.density = value;
+  render();
+}
+function onTempoChange(value) {
+  Tone.Transport.bpm.value = value;
+  render();
+}
+function onOutputChange(value) {
+  activateOutput(value);
+  render();
+}
+
+function App({
+  loading,
+  keyboard,
+  triads,
+  loops,
+  controls,
+  scale,
+  interactionTick })
+{
+  return h("div", { className: `container scale-${scale[0]}` }, [
+  h(Visualization, {
+    keyboard,
+    triads,
+    loops,
+    keySig: controls.keySig,
+    scale,
+    interactionTick }),
+
+  h(Controls, { controls, scale }),
+  loading ? h("div", { className: "loading" }, "Loading...") : null]);
+
+}
+
+function Visualization({
+  keyboard,
+  triads,
+  loops,
+  keySig,
+  scale,
+  interactionTick })
+{
+  return h(
+  "div",
+  {
+    className: "visualizations",
+    onMouseDown,
+    onMouseUp,
+    ontouchstart: onTouchStart,
+    ontouchend: onTouchEnd,
+    ontouchmove: onTouchMove },
+
+  [
+  h(Keyboard, { keyboard, loops, keySig, scale }),
+  h(Loops, { loops, scale, interactionTick }),
+  h(Triads, { triads }),
+  h(TriadTouchPoints, { loops, scale, interactionTick })]);
+
+
+}
+
+function Keyboard({ keyboard, loops, keySig, scale }) {
+  let downKeys = new Set(loops.filter(l => l.downKey).map(l => l.downKey.key));
+  return h(
+  "svg",
+  { className: "visualization" },
+  _.flatMap(keyboard, (col) =>
+  col.
+  filter(_.identity).
+  map((key) =>
+  h(Key, { keyData: key, keySig, scale, isDown: downKeys.has(key) }))));
+
+
+
+}
+
+class Key extends Inferno.Component {
+  componentDidUpdate() {
+    if (this.props.isDown) {
+      TweenLite.fromTo(
+      this.polygonRef,
+      new Tone.Time(TICK_DURATION).toSeconds(),
+      {
+        attr: { fill: getHighlightColor(this.props.scale) } },
+
+      {
+        attr: {
+          fill: isAccidental(this.props.keyData.note) ? "black" : "white" },
+
+        ease: SlowMo.easeOut });
+
+
+    }
+  }
+
+  render() {
+    let { keyData, keySig } = this.props;
+    return h("g", [
+    h("polygon", {
+      points: keyData.polyPoints.map(p => p.join(",")).join(" "),
+      className: `key ${getClasses(keyData.note)}`,
+      fill: isAccidental(keyData.note) ? "black" : "white",
+      ref: r => this.polygonRef = r }),
+
+    h(
+    "text",
+    {
+      x: keyData.pos.x + keyData.pos.r,
+      y: keyData.pos.y + keyData.pos.r + 4,
+      "text-anchor": "middle",
+      className: `note ${getClasses(keyData.note)}` },
+
+    renderNote(keyData.note, keySig))]);
+
+
+  }}
+
+
+function getClasses(note) {
+  let result = " ";
+  if (isAccidental(note)) result += "accidental ";
+  if (isActive(note)) result += "active ";
+  return result;
+}
+
+function isAccidental(note) {
+  let pc = note % 12;
+  return pc === 1 || pc === 3 || pc === 6 || pc === 8 || pc === 10;
+}
+
+function getHighlightColor(scale, alpha = 1) {
+  switch (scale[0]) {
+    case 9:
+      return `rgba(255, 89, 64, ${alpha})`;
+    case 4:
+      return `rgba(224, 255, 64, ${alpha}`;
+    case 11:
+      return `rgba(204, 202, 20, ${alpha})`;
+    case 6:
+      return `rgba(255, 167, 64, ${alpha})`;
+    case 1:
+      return `rgba(255, 64, 149, ${alpha})`;
+    case 8:
+      return `rgba(255, 64, 84, ${alpha})`;
+    case 3:
+      return `rgba(255, 180, 64, ${alpha})`;
+    case 10:
+      return `rgba(255, 0, 255, ${alpha})`;
+    case 5:
+      return `rgba(116, 0, 255, ${alpha})`;
+    case 0:
+      return `rgba(224, 64, 255, ${alpha})`;
+    case 7:
+      return `rgba(245, 255, 64, ${alpha})`;
+    case 2:
+      return `rgba(0, 110, 255, ${alpha})`;}
+
+}
+
+function Loops({ loops, interactionTick, scale }) {
+  let buildingLoop = _.find(loops, { harmonizing: false });
+  let combinedLoop = {
+    triads: loops.
+    map(loop => _.find(loop.triads, { isCurrent: true })).
+    filter(_.identity),
+    closed: true };
+
+  return h("svg", { className: "visualization" }, [
+  h(
+  "filter",
+  { id: "dropshadow", x: "-20%", y: "-20%", width: "150%", height: "150%" },
+  [
+  h("feGaussianBlur", { in: "SourceAlpha", stdDeviation: 3 }),
+  h("feOffset", { dx: 2, dy: 2, result: "offsetBlur" }),
+  h("feComponentTransfer", [
+  h("feFuncA", { type: "linear", slope: 1.0 })]),
+
+  h("feMerge", [
+  h("feMergeNode"),
+  h("feMergeNode", { in: "SourceGraphic" })])]),
+
+
+
+  buildingLoop &&
+  h(Loop, {
+    loop: buildingLoop,
+    interactionTick,
+    className: "building",
+    stroke: "white",
+    fill: "none" }),
+
+  combinedLoop.triads.length &&
+  h(Loop, {
+    loop: combinedLoop,
+    interactionTick,
+    className: "combined",
+    stroke: getHighlightColor(scale),
+    fill: getHighlightColor(scale, 0.75) })]);
+
+
+}
+
+class Loop extends Inferno.Component {
+  componentDidMount() {
+    this.pathRef.setAttribute("d", this.getPath(this.props));
+  }
+
+  componentDidUpdate(prevProps) {
+    flashAnimate(this.props, prevProps, this.pathRef);
+    let oldPath = this.getPath(prevProps);
+    let newPath = this.getPath(this.props);
+    TweenLite.to(this.pathRef, new Tone.Time("8n").toSeconds(), {
+      attr: { d: newPath },
+      ease: SlowMo.easeOut });
+
+  }
+
+  render() {
+    return h("path", {
+      className: `loop ${this.props.className}`,
+      stroke: this.props.stroke,
+      fill: this.props.fill,
+      ref: r => this.pathRef = r });
+
+  }
+
+  getPath({ loop }) {
+    let d = "";
+    for (let i = 0; i < loop.triads.length; i++) {if (window.CP.shouldStopExecution(6)) break;
+      d += `${i === 0 ? "M" : "L"} ${loop.triads[i].triad.pos.x} ${
+      loop.triads[i].triad.pos.y
+      }`;
+    }window.CP.exitedLoop(6);
+    d += loop.closed ? "Z" : "";
+    return d;
+  }}
+
+
+class Triads extends Inferno.Component {
+  componentDidMount() {
+    let tGroups = this.tRefs.map(r => r.groupEl);
+    let appearTimeline = new TimelineLite();
+    appearTimeline.staggerFrom(
+    tGroups,
+    0.5,
+    {
+      scale: 0.01, // Zero confuses Firefox for some reason.
+      transformOrigin: "50% 50%",
+      ease: Back.easeOut.config(3),
+      delay: 0.5 },
+
+    0.0075);
+
+  }
+
+  render() {
+    this.tRefs = [];
+    return h(
+    "svg",
+    { className: "visualization" },
+    this.props.triads.map((triad) =>
+    h(Triad, { ref: r => this.tRefs.push(r), triad })));
+
+
+  }}
+
+
+class Triad extends Inferno.Component {
+  render() {
+    return h("g", { ref: r => this.groupEl = r }, [
+    h("circle", {
+      id: this.props.triad.id,
+      cx: this.props.triad.pos.x,
+      cy: this.props.triad.pos.y,
+      r: this.props.triad.pos.r,
+      className: "triad",
+      style: "filter:url(#dropshadow)",
+      onMouseOver: onMouseOverTriad,
+      onMouseOut: onMouseOutOfTriad }),
+
+    h(
+    "text",
+    {
+      x: this.props.triad.pos.x,
+      y: this.props.triad.pos.y + 3,
+      "text-anchor": "middle",
+      className: "triad-chord" },
+
+    getTriadNumeral(this.props.triad.keys))]);
+
+
+  }}
+
+
+function TriadTouchPoints({ loops, scale, interactionTick }) {
+  return h(
+  "svg",
+  { className: "visualization", style: { "pointer-events": "none" } },
+  _.flatMap(loops, (loop) =>
+  loop.triads.
+  filter(t => t.isCurrent || !loop.harmonizing).
+  map((loopTriad) =>
+  h(TriadTouchPoint, { loopTriad, loop, scale, interactionTick }))));
+
+
+
+}
+
+class TriadTouchPoint extends Inferno.Component {
+  componentDidUpdate(prevProps) {
+    flashAnimate(this.props, prevProps, this.circleRef);
+  }
+
+  render() {
+    return h("circle", {
+      r: this.props.loopTriad.triad.pos.r,
+      cx: this.props.loopTriad.triad.pos.x,
+      cy: this.props.loopTriad.triad.pos.y,
+      stroke: getHighlightColor(this.props.scale),
+      fill: getHighlightColor(this.props.scale, 0.3),
+      className: `loop-triad-touch-point ${
+      this.props.loopTriad.isCurrent ? "current" : ""
+      }`,
+      ref: el => this.circleRef = el });
+
+  }}
+
+
+function Controls({ controls, scale }) {
+  let color = getHighlightColor(scale);
+  let outputOptions = Object.keys(outputs).filter(o => outputs[o].supported);
+  return h("div", { className: "controls" }, [
+  h("div", { className: "control" }, [
+  h(Dial, {
+    min: 0,
+    max: 11,
+    value: controls.keySig,
+    color,
+    onInput: onKeySigChange }),
+
+  h(
+  "div",
+  { className: "control-label" },
+  renderNote(scale[0], controls.keySig).replace(/-*\d+/, ""))]),
+
+
+  h("div", { className: "control" }, [
+  h(Dial, {
+    min: 0,
+    max: 6,
+    value: controls.mode,
+    color,
+    onInput: onModeChange }),
+
+  h("div", { className: "control-label" }, MODES[controls.mode].name)]),
+
+  h("div", { className: "control" }, [
+  h("div", { className: "control-label" }, ["Voices: ", controls.voices]),
+  h(Slider, {
+    min: 1,
+    max: 6,
+    value: controls.voices,
+    color,
+    onInput: onVoicesChange })]),
+
+
+  h("div", { className: "control" }, [
+  h("div", { className: "control-label" }, "Pattern density"),
+  h(Slider, {
+    type: "range",
+    min: 0,
+    max: 1,
+    step: 0.1,
+    value: controls.density,
+    color,
+    onInput: onDensityChange })]),
+
+
+  h("div", { className: "control" }, [
+  h("div", { className: "control-label" }, [
+  "Tempo: ",
+  Math.round(Tone.Transport.bpm.value)]),
+
+  h(Slider, {
+    type: "range",
+    min: 10,
+    max: 250,
+    value: Tone.Transport.bpm.value,
+    color,
+    onInput: onTempoChange })]),
+
+
+  outputOptions.length > 1 ?
+  h(
+  "div",
+  { className: "control flush-right" },
+  h(Select, {
+    options: outputOptions,
+    value: controls.output,
+    color,
+    onChange: onOutputChange })) :
+
+
+  null]);
+
+}
+
+class Dial extends Inferno.Component {
+  render() {
+    return h("div", { ref: r => this.container = r });
+  }
+
+  componentDidMount() {
+    this.dial = Nexus.Add.Dial(this.container, {
+      min: this.props.min,
+      max: this.props.max + 0.5,
+      step: this.props.step || 1,
+      value: this.props.value,
+      mode: "absolute" });
+
+    this.dial.colorize("accent", this.props.color);
+    this.dial.on("change", v => this.props.onInput(v));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.color !== prevProps.color) {
+      this.dial.colorize("accent", this.props.color);
+    }
+  }
+
+  componentWillUnmount() {
+    this.dial.destroy();
+  }}
+
+
+class Slider extends Inferno.Component {
+  render() {
+    return h("div", { ref: r => this.container = r });
+  }
+
+  componentDidMount() {
+    this.slider = Nexus.Add.Slider(this.container, {
+      min: this.props.min,
+      max: this.props.max,
+      step: this.props.step || 1,
+      value: this.props.value,
+      mode: "absolute" });
+
+    this.slider.colorize("accent", this.props.color);
+    this.slider.on("change", v => this.props.onInput(v));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.color !== prevProps.color) {
+      this.slider.colorize("accent", this.props.color);
+    }
+  }
+
+  componentWillUnmount() {
+    this.slider.destroy();
+  }}
+
+
+class Select extends Inferno.Component {
+  render() {
+    return h("div", { ref: r => this.container = r });
+  }
+
+  componentDidMount() {
+    this.select = Nexus.Add.Select(this.container, {
+      options: this.props.options.map(o => this.renderOption(o)),
+      value: this.renderOption(this.props.value) });
+
+    this.select.colorize("accent", this.props.color);
+    this.select.on("change", (v) =>
+    this.props.onChange(this.props.options[v.index]));
+
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.color !== prevProps.color) {
+      this.select.colorize("accent", this.props.color);
+    }
+  }
+
+  componentWillUnmount() {
+    this.select.destroy();
+  }
+
+  renderOption(option) {
+    return `${_.capitalize(option)} out`;
+  }}
+
+
+function renderNote(note, keySig) {
+  let noteChr = new Tone.Frequency(note, "midi").
+  toNote().
+  replace("#", "\u266F");
+  return keySig > 6 ? sharpToFlat(noteChr) : noteChr;
+}
+
+function sharpToFlat(note) {
+  return note.
+  replace("C\u266F", "D\u266D").
+  replace("D\u266F", "E\u266D").
+  replace("F\u266F", "G\u266D").
+  replace("G\u266F", "A\u266D").
+  replace("A\u266F", "B\u266D");
+}
+
+function flashAnimate(props, lastProps, el) {
+  if (
+  !props.loop.closed &&
+  props.interactionTick !== lastProps.interactionTick)
+  {
+    let dur =
+    new Tone.TransportTime(TICK_DURATION).toSeconds() * TICKS_PER_INTERACTION;
+    TweenLite.fromTo(
+    el,
+    dur,
+    { opacity: 1 },
+    {
+      opacity: 0.33,
+      ease: Power2.easeOut,
+      onComplete: () => el.style.opacity = 1 });
+
+
+  }
+}
+
+function render() {
+  Inferno.render(
+  h(App, {
+    loading,
+    keyboard,
+    triads,
+    loops,
+    controls,
+    scale,
+    interactionTick }),
+
+  document.getElementById("app"));
+
+}
+
+window.addEventListener(
+"resize",
+_.debounce(() => {
+  keyboard = updateKeyCoordinates(
+  keyboard,
+  window.innerWidth,
+  window.innerHeight);
+
+  triads = buildTriads();
+  migrateLoopsToCurrentTriads();
+  render();
+}, 100));
+
+
+Tone.Transport.start();
+activateOutput("synth").then(() => {
+  loading = false;
+  render();
+});
+render();
+StartAudioContext(Tone.context, ".visualizations");
+//# sourceURL=pen.js
+    </script>
+
+  
+
+</body>
+
+</html>

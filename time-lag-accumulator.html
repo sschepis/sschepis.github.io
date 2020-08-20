@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="apple-touch-icon" type="image/png" href="https://static.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+<meta name="apple-mobile-web-app-title" content="CodePen">
+<link rel="shortcut icon" type="image/x-icon" href="https://static.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+<link rel="mask-icon" type="" href="https://static.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+<title>CodePen - The Time Lag Accumulator</title>
+<meta name="viewport" content="width=auto">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Bungee+Inline|PT+Sans'>
+<style>
+html, body {
+  background-color: #111;
+  color: #f6f6e6;
+}
+
+.post {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Bungee Inline', cursive;
+  font-size: 65px;
+}
+
+h2 {
+  margin: 0 auto 30px auto;
+  text-align: center;
+  font-size: 20px;
+}
+
+p, figure {
+  max-width: 670px;
+  margin: 20px auto;
+}
+
+figure {
+  margin: 50px auto;
+}
+img {
+  max-width: 100%;
+}
+figcaption {
+  font-style: italic;
+  font-size: 16px;
+}
+
+a, a:visited {
+  color: white;
+}
+
+
+.canvas-wrapper, .keyboard-wrapper {
+  max-width: 670px;
+  margin: 0 auto 40px auto;
+}
+.instr {
+  padding: 5px 0;
+  font-size: 14px;
+  text-align: center;
+}
+</style>
+<script>
+  window.console = window.console || function(t) {};
+</script>
+<script>
+  if (document.location.search.match(/type=embed/gi)) {
+    window.parent.postMessage("resize", "*");
+  }
+</script>
+</head>
+<body translate="no">
+<div class="post">
+<h1>The Time Lag Accumulator</h1>
+<div class="canvas-wrapper">
+<canvas id="canvas"></canvas>
+</div>
+<div class="keyboard-wrapper">
+<canvas nx="keyboard" id="onScreenKeyb" style="display: block; width: 450px; height: 100px; margin: 0 auto;"></canvas>
+<figcaption class="instr">Play with mouse or <a href="https://camo.githubusercontent.com/29529110d639ed79a04752c036fe301fd15c961b/68747470733a2f2f7261772e6769746875622e636f6d2f6b796c65737465747a2f617564696f6b6579732f6d61737465722f696d616765732f617564696f6b6579732d6d617070696e672d726f7773322e6a7067" target="_blank">keyboard</a>.</figcaption>
+</div>
+<p>
+The Time Lag Accumulator is a musical system that messes with time. Every note you play is repeated over and over every few seconds, until it gradually fades out. This means you can play a duet with the you from the past. </p>
+<p>
+The Time Lag Accumulator was originally a system made out of two reel-to-reel tape recorders. You would record your music on recorder A, then play it back immediately on recorder B, feeding the output of B back to A.
+</p>
+<figure>
+<img src="https://teropa.info/timelag/accumulator.png">
+</figure>
+<p>
+The length of the resulting live loop was controlled by adjusting the physical distance between the two tape machines.
+</p>
+<p>
+Pauline Oliveros used the Time Lag Accumulator in her work <a href="https://www.youtube.com/watch?v=MLSFRmmTTjo">I of IV</a> in 1966.
+</p>
+<figure>
+<img src="https://teropa.info/timelag/oliveros-i-of-iv.png">
+<figcaption>Pauline Oliveros: Tape Delay Techniques for Electronic Composers (1969)</figcaption>
+</figure>
+<p>
+Terry Riley used it in <a href="https://www.youtube.com/watch?v=gRXBg73jy5Q">Poppy Nogood and the Phantom Band</a>, released in 1969. It is he who came up with the name "Time Lag Accumulation".
+</p>
+<p>
+Brian Eno and Robert Fripp used the system on their <a href="https://en.wikipedia.org/wiki/(No_Pussyfooting)">(No Pussyfooting)</a> record in 1972-73. This version of the system came to be known as <a href="https://en.wikipedia.org/wiki/Frippertronics">"Frippertronics"</a>. Eno also <a href="https://teropa.info/blog/2016/07/28/javascript-systems-music.html#brian-enodiscreet-music1975">used the same system</a> on <a href="https://www.youtube.com/watch?v=LOpRj927vRc">Discreet Music</a>, one of his early ambient works, in 1975.
+</p>
+<figure>
+<img src="https://teropa.info/timelag/discreet.jpg">
+<figcaption>Brian Eno: Discreet Music (1975)</figcaption>
+</figure>
+<h2>A pen by <a href="https://twitter.com/teropa">@teropa</a>.</h2>
+</div>
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-157cd5b220a5c80d4ff8e0e70ac069bffd87a61252088146915e8726e5d9f147.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/tone@0.12.80/build/Tone.min.js'></script>
+<script src='https://cdn.rawgit.com/kylestetz/AudioKeys/0d6f55c3/dist/audiokeys.js'></script>
+<script src='https://cdn.rawgit.com/lsu-emdm/nexusUI/8d859fbc/dist/nexusUI.min.js'></script>
+<script src='https://cdn.rawgit.com/cotejp/webmidi/cf60ad0c/webmidi.min.js'></script>
+<script src='https://cdn.rawgit.com/tambien/StartAudioContext/8da8637e/StartAudioContext.js'></script>
+<script id="rendered-js">
+const DELAY = 6;
+const NOTE_RANGE = [60, 91];
+
+const wrapper = document.querySelector('.canvas-wrapper');
+const canvas = document.querySelector('#canvas');
+const context = canvas.getContext('2d');
+
+let size;
+function resize() {
+  canvas.width = wrapper.offsetWidth;
+  canvas.height = wrapper.offsetWidth;
+  size = Math.min(canvas.width, canvas.height);
+}
+window.addEventListener('resize', resize);
+resize();
+
+
+const synth = new Tone.DuoSynth({
+  harmonicity: 1,
+  volume: -15,
+  voice0: {
+    oscillator: {
+      type: 'sawtooth' },
+
+    filterEnvelope: {
+      attack: 0,
+      decay: 0,
+      baseFrequency: 200,
+      octaves: 2,
+      release: 1000 },
+
+    envelope: {
+      attack: 0.1,
+      release: 0.5,
+      releaseCurve: 'linear' } },
+
+
+  voice1: {
+    oscillator: {
+      type: 'sawtooth' },
+
+    filterEnvelope: {
+      attack: 0,
+      decay: 0,
+      baseFrequency: 200,
+      octaves: 2,
+      release: 1000 },
+
+    envelope: {
+      attack: 0.1,
+      release: 0.5,
+      releaseCurve: 'linear' } },
+
+
+  vibratoAmount: 0.06,
+  vibratoRate: 0.5 });
+
+const delay = Tone.context.createDelay(DELAY);
+const gain = Tone.context.createGain();
+delay.delayTime.value = DELAY;
+gain.gain.value = 0.75;
+synth.connect(delay);
+synth.toMaster();
+delay.connect(gain);
+gain.connect(delay);
+gain.connect(Tone.context.destination);
+
+const sounds = [];
+
+let currentNote;
+
+function noteOn(note, triggerOnScreen = true) {
+  if (note < NOTE_RANGE[0] || note > NOTE_RANGE[1]) return;
+  const frequency = new Tone.Frequency(note, 'midi');
+  currentNote = note;
+  synth.triggerAttack(frequency);
+  if (triggerOnScreen) toggleOnScreen(note, true);
+  sounds.push({ note, frequency, startAt: Tone.now() });
+}
+function noteOff(note, triggerOnScreen = true) {
+  if (note < NOTE_RANGE[0] || note > NOTE_RANGE[1]) return;
+  if (currentNote === note) {
+    synth.triggerRelease();
+  }
+  if (triggerOnScreen) toggleOnScreen(note, false);
+  for (let i = sounds.length - 1; i >= 0; i--) {
+    if (!sounds[i].endAt && sounds[i].note === note) {
+      sounds[i].endAt = Tone.now();
+    }
+  }
+}
+
+// On-sreen keyboard management
+nx.onload = () => {
+  onScreenKeyb.midibase = NOTE_RANGE[0];
+  onScreenKeyb.octaves = (NOTE_RANGE[1] - NOTE_RANGE[0]) / 12;
+  onScreenKeyb.on('*', ({ note, on }) => on ? noteOn(note, false) : noteOff(note, false));
+  onScreenKeyb.init();
+};
+function toggleOnScreen(note, on) {
+  if (!onScreenKeyb) return;
+  for (const key of onScreenKeyb.keys) {
+    if (key.note === note) {
+      onScreenKeyb.toggle(key, on);
+    }
+  }
+}
+
+// Kickstart audioctx on mobile
+StartAudioContext(Tone.context, '#onScreenKeyb');
+
+// Keyboard input
+const keyboard = new AudioKeys({ polyphony: 1, rows: 2 });
+keyboard.down(({ note }) => noteOn(note));
+keyboard.up(({ note }) => noteOff(note));
+
+// MIDI keyboard
+WebMidi.enable(err => {
+  if (err) {
+    console.log("WebMidi could not be enabled.", err);
+  } else {
+    WebMidi.inputs.forEach(input => {
+      input.addListener('noteon', 'all', e => noteOn(e.note.number));
+      input.addListener('noteoff', 'all', e => noteOff(e.note.number));
+    });
+  }
+});
+
+// Visuals
+const startedAt = Tone.now();
+function render() {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  const bgAngle = (Tone.now() - startedAt) / DELAY * Math.PI * 2;
+  const grad = context.createLinearGradient(-size / 2, 0, size / 2, 0);
+  grad.addColorStop(0, '#181018');
+  grad.addColorStop(1, '#101818');
+  context.fillStyle = grad;;
+  context.beginPath();
+  context.save();
+  context.translate(centerX, centerY);
+  context.rotate(bgAngle);
+  context.arc(0, 0, size / 2, 0, Math.PI * 2);
+  context.fill();
+  context.restore();
+
+  context.lineWidth = 1;
+  context.strokeStyle = '#555';
+  context.beginPath();
+  context.moveTo(centerX, centerY);
+  context.lineTo(centerX + size / 2, centerY);
+  context.stroke();
+
+  context.lineWidth = size / 20;
+
+  for (const sound of sounds) {
+    const sinceStarted = Tone.now() - sound.startAt;
+    const alpha = Math.max(0, 1 - sinceStarted / 75);
+    const startRotations = sinceStarted / DELAY;
+    const endRotations = sound.endAt ?
+    (Tone.now() - sound.endAt) / DELAY :
+    0;
+    const startAngle = startRotations * Math.PI * 2;
+    const endAngle = endRotations * Math.PI * 2;
+    const radius = (sound.note - NOTE_RANGE[0]) / (NOTE_RANGE[1] - NOTE_RANGE[0]);
+
+    if (endAngle < startAngle) {
+      context.strokeStyle = `rgba(237,20,111,${alpha})`;
+      context.beginPath();
+      context.arc(centerX, centerY, 10 + radius * (size / 2 - 20), startAngle, endAngle, true);
+      context.stroke();
+    }
+  }
+
+  requestAnimationFrame(render);
+}
+render();
+
+
+// Periodically remove sounds that are no longer audible from the visualization.
+function cleanUp() {
+  for (let i = sounds.length - 1; i >= 0; i--) {
+    const sound = sounds[i];
+    const sinceStarted = Tone.now() - sound.startAt;
+    if (sinceStarted > 75) {
+      sounds.splice(i, 1);
+    }
+  }
+}
+setInterval(cleanUp, 5000);
+//# sourceURL=pen.js
+    </script>
+</body>
+</html>
